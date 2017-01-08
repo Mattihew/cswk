@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.mattihew.cswk.programming2.model.Booking;
 import com.mattihew.cswk.programming2.model.Student;
+import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 
 public class Trip
 {
@@ -15,16 +16,13 @@ public class Trip
 	
 	private final String destination;
 	
-	private final TripType tripType;
-	
 	private final TripProvider tripProvider;
 	
-	public Trip(final String destination, final TripType tripType, final TripProvider tripProvider)
+	public Trip(final String destination, final TripProvider tripProvider)
 	{
 		super();
 		this.bookings = new HashSet<>();
 		this.destination = destination;
-		this.tripType = tripType;
 		this.tripProvider = tripProvider;
 	}
 	
@@ -50,6 +48,11 @@ public class Trip
 		return this.bookings.remove(booking);
 	}
 	
+	/**
+	 * Returns an unmodifiable view of the bookings for this Trip.
+	 * 
+	 * @return bookings for trip.
+	 */
 	public Set<Booking> getBookings()
 	{
 		return Collections.unmodifiableSet(this.bookings);
@@ -59,7 +62,7 @@ public class Trip
 	{
 		if(!this.containsStudent(student))
 		{
-			return this.addBooking(new Booking(student));
+			return this.addBooking(new Booking(student, false));
 		}
 		return false;
 	}

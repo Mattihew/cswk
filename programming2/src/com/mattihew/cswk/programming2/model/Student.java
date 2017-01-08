@@ -2,12 +2,10 @@ package com.mattihew.cswk.programming2.model;
 
 import java.util.Objects;
 
-public class Student implements Comparable<Student>
+import com.mattihew.cswk.programming2.model.abstracts.Person;
+
+public class Student extends Person implements Comparable<Student>
 {
-	private final String firstName;
-	
-	private final String lastName;
-	
 	private final String phone;
 	
 	/**
@@ -18,9 +16,7 @@ public class Student implements Comparable<Student>
 	 */
 	public Student(final String firstName, final String lastName, final String phone)
 	{
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
+		super(firstName, lastName);
 		this.phone = phone;
 	}
 	
@@ -32,7 +28,7 @@ public class Student implements Comparable<Student>
 	@Override
 	public String toString()
 	{
-		return String.join("/n", this.firstName, this.lastName, this.phone);
+		return String.join("/n", super.toString(), this.phone);
 	}
 	
 	/**
@@ -43,7 +39,7 @@ public class Student implements Comparable<Student>
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(this.firstName, this.lastName, this.phone);
+		return Objects.hash(super.hashCode(), this.phone);
 	}
 	
 	/**
@@ -66,8 +62,7 @@ public class Student implements Comparable<Student>
 		else
 		{
 			final Student otherStudent = (Student) other;
-			result = this.firstName.equals(otherStudent.firstName);
-			result &= this.lastName.equals(otherStudent.lastName);
+			result = super.equals(otherStudent);
 			result &= this.phone.equals(otherStudent.phone);
 		}
 		return result;
@@ -81,18 +76,11 @@ public class Student implements Comparable<Student>
 	@Override
 	public int compareTo(final Student anotherStudent)
 	{
-		int result = this.firstName.compareTo(anotherStudent.firstName);
+		int result = super.compareTo(anotherStudent);
 		if (result != 0)
-		{
-			return result;
-		}
-		result = this.lastName.compareTo(anotherStudent.lastName);
-		if (result != 0)
-		{
-			return result;
-		}
-		result = this.phone.compareTo(anotherStudent.phone);
+		{	return result;}
 		
+		result = this.phone.compareTo(anotherStudent.phone);
 		return result;
 	}
 }

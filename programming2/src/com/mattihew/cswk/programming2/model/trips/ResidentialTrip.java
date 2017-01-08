@@ -1,7 +1,6 @@
 package com.mattihew.cswk.programming2.model.trips;
 
-public enum TripType
+public class ResidentialTrip
 {
-	Single_Day_Trip,
-	Residential_Trip;
+
 }
