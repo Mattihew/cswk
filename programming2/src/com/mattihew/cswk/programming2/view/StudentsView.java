@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
@@ -63,7 +64,7 @@ public class StudentsView extends JFrame implements Observer
 		});
 		mnInsert.add(mntmNewStudent);
 		
-		this.tableModel = new DefaultTableModel(new String[]{"First Name","Last Name", "Phone Number"}, 0);
+		this.tableModel = new MyTableModel(new String[]{"First Name","Last Name", "Phone Number"}, 0);
 		this.table = new JTable(this.tableModel);
 		this.getContentPane().add(table.getTableHeader(), BorderLayout.NORTH);
 		this.getContentPane().add(table, BorderLayout.CENTER);
