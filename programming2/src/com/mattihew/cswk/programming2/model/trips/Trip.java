@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.mattihew.cswk.programming2.model.Booking;
-import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
+import com.mattihew.cswk.programming2.model.students.Student;
 
 public class Trip
 {

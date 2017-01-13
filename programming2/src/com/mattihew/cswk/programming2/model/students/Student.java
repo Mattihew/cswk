@@ -1,4 +1,4 @@
-package com.mattihew.cswk.programming2.model;
+package com.mattihew.cswk.programming2.model.students;
 
 import java.util.Objects;
 
@@ -18,6 +18,11 @@ public class Student extends Person implements Comparable<Student>
 	{
 		super(firstName, lastName);
 		this.phone = phone;
+	}
+	
+	public String getPhoneNum()
+	{
+		return this.phone;
 	}
 	
 	/**

@@ -2,6 +2,8 @@ package com.mattihew.cswk.programming2.model;
 
 import java.util.Objects;
 
+import com.mattihew.cswk.programming2.model.students.Student;
+
 public class Booking implements Comparable<Booking>
 {
 	private final Student student;
