@@ -2,6 +2,8 @@ package com.mattihew.cswk.programming2.controller;
 
 import java.awt.EventQueue;
 
+import javax.swing.UIManager;
+
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
 import com.mattihew.cswk.programming2.view.StudentsView;
@@ -20,6 +22,14 @@ public class Controller
 			@Override
 			public void run()
 			{
+				try
+				{
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				}
+				catch (Exception e)
+				{
+					
+				}
 				TripsView tripsWindow = new TripsView();
 				StudentsView studentsWindow = new StudentsView();
 				studentsWindow.setVisible(true);

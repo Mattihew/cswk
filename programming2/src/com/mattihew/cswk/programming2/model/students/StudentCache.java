@@ -1,20 +1,21 @@
 package com.mattihew.cswk.programming2.model.students;
 
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.UUID;
 
 public class StudentCache extends Observable
 {
 	private static StudentCache INSTANCE = null;
 	
-	private Set<Student> students;
+	private final Map<UUID, Student> students;
 	
 	private StudentCache()
 	{
 		super();
-		this.students = new TreeSet<>();
+		this.students = new LinkedHashMap<>();
 	}
 	
 	public static StudentCache getInstance()
@@ -26,18 +27,19 @@ public class StudentCache extends Observable
 		return StudentCache.INSTANCE;
 	}
 	
-	public Set<Student> getStudents()
+	public Map<UUID, Student> getStudents()
 	{
-		return Collections.unmodifiableSet(this.students);
+		return Collections.unmodifiableMap(this.students);
 	}
 	
 	public boolean addStudent(final Student student)
 	{
-		final boolean result = this.students.add(student);
+		final UUID studentID = UUID.randomUUID();
+		final boolean result = student.equals(this.students.put(studentID, student));
 		if (result)
 		{
 			this.setChanged();
-			this.notifyObservers(student);
+			this.notifyObservers(studentID);
 		}
 		return result;
 	}

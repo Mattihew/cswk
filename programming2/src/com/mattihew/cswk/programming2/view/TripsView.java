@@ -12,7 +12,7 @@ public class TripsView extends JFrame
 	 */
 	public TripsView()
 	{
-		this.setTitle("Trips");
+		super("Trips");
 		this.setBounds(100, 100, 450, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
