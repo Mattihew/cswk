@@ -1,11 +1,11 @@
 package com.mattihew.cswk.programming2.view;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
@@ -51,7 +51,7 @@ public class StudentsView extends JFrame implements Observer
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				final NewStudentView newStudent = new NewStudentView(StudentsView.this);
+				new NewStudentView(StudentsView.this);
 			}
 		});
 		mnInsert.add(mntmNewStudent);
@@ -66,13 +66,22 @@ public class StudentsView extends JFrame implements Observer
 		
 		JMenuItem mntmEdit = new JMenuItem("Edit");
 		popupMenu.add(mntmEdit);
+		mntmEdit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				final UUID id = (UUID) StudentsView.this.table.getValueAt(StudentsView.this.table.getSelectedRow(), 0);
+				new NewStudentView(StudentsView.this, StudentCache.getInstance().getStudent(id), id);
+			}
+		});
+		
 		StudentCache.getInstance().addObserver(this);
 		this.populateTable();
 	}
 	
 	private void addStudentToTable(final UUID id, final Student student)
 	{
-		final String[] data = {id.toString(), student.getFirstName(), student.getLastName(), student.getPhoneNum()};
+		final Object[] data = {id, student.getFirstName(), student.getLastName(), student.getPhoneNum()};
 		this.tableModel.addRow(data);
 	}
 
@@ -84,17 +93,38 @@ public class StudentsView extends JFrame implements Observer
 		}
 	}
 	
+	private void replaceStudentInTable(final UUID id, final Student student)
+	{
+		for (int i = 0; i < this.table.getRowCount(); i++)
+		{
+			if (this.table.getValueAt(i, 0).equals(id))
+			{
+				this.tableModel.setValueAt(student.getFirstName(),i, 1);
+				this.tableModel.setValueAt(student.getLastName(), i, 2);
+				this.tableModel.setValueAt(student.getPhoneNum(), i, 3);
+				return;
+			}
+		}
+		this.addStudentToTable(id, student);
+	}
+	
 	@Override
 	public void update(final Observable o, final Object arg)
 	{
-		if (o instanceof StudentCache && arg instanceof UUID)
+		if (o instanceof StudentCache && arg instanceof Collection)
 		{
-			this.addStudentToTable((UUID) arg, StudentCache.getInstance().getStudents().get(arg));
+			for (final Object id : (Collection<?>) arg)
+			{
+				if (id instanceof UUID)
+				{
+					this.replaceStudentInTable((UUID) id, StudentCache.getInstance().getStudents().get(id));
+				}
+			}
 		}
 	}
 	
-	private static void addPopup(final Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
+	private static void addPopup(final JTable table, final JPopupMenu popup) {
+		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(final MouseEvent e) {
 				if (e.isPopupTrigger()) {
@@ -108,6 +138,8 @@ public class StudentsView extends JFrame implements Observer
 				}
 			}
 			private void showMenu(final MouseEvent e) {
+				int row = table.rowAtPoint(e.getPoint());
+				table.setRowSelectionInterval(row, row);
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});

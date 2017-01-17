@@ -27,6 +27,11 @@ public class StudentCache extends Observable
 		return StudentCache.INSTANCE;
 	}
 	
+	public Student getStudent(final UUID id)
+	{
+		return this.students.get(id);
+	}
+	
 	public Map<UUID, Student> getStudents()
 	{
 		return Collections.unmodifiableMap(this.students);
@@ -34,12 +39,24 @@ public class StudentCache extends Observable
 	
 	public boolean addStudent(final Student student)
 	{
-		final UUID studentID = UUID.randomUUID();
-		final boolean result = student.equals(this.students.put(studentID, student));
+		final boolean result = !this.students.containsValue(student);
 		if (result)
 		{
+			final UUID studentID = UUID.randomUUID();
+			this.students.put(studentID, student);
 			this.setChanged();
-			this.notifyObservers(studentID);
+			this.notifyObservers(Collections.singleton(studentID));
+		}
+		return result;
+	}
+	
+	public Student putStudent(final UUID id, final Student student)
+	{
+		final Student result = this.students.put(id, student);
+		if (!student.equals(result))
+		{
+			this.setChanged();
+			this.notifyObservers(Collections.singleton(id));
 		}
 		return result;
 	}

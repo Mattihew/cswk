@@ -83,8 +83,9 @@ public class Student extends Person implements Comparable<Student>
 	{
 		int result = super.compareTo(anotherStudent);
 		if (result != 0)
-		{	return result;}
-		
+		{
+			return result;
+		}
 		result = this.phone.compareTo(anotherStudent.phone);
 		return result;
 	}
