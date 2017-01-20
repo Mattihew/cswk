@@ -75,22 +75,17 @@ public class StudentsView extends JFrame implements Observer
 			}
 		});
 		
+		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getStudents().entrySet())
+		{
+			this.addStudentToTable(studentEntry.getKey(), studentEntry.getValue());
+		}
 		StudentCache.getInstance().addObserver(this);
-		this.populateTable();
 	}
 	
 	private void addStudentToTable(final UUID id, final Student student)
 	{
 		final Object[] data = {id, student.getFirstName(), student.getLastName(), student.getPhoneNum()};
 		this.tableModel.addRow(data);
-	}
-
-	private void populateTable()
-	{
-		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getStudents().entrySet())
-		{
-			this.addStudentToTable(studentEntry.getKey(), studentEntry.getValue());
-		}
 	}
 	
 	private void replaceStudentInTable(final UUID id, final Student student)
