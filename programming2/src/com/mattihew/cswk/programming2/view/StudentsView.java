@@ -3,11 +3,10 @@ package com.mattihew.cswk.programming2.view;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
@@ -68,13 +67,13 @@ public class StudentsView extends TableFrame<Student> implements Observer
 	}
 
 	@Override
-	protected void newActionPerformed(ActionEvent e)
+	protected void newActionPerformed(final ActionEvent e)
 	{
 		new NewStudentView(this);
 	}
 
 	@Override
-	protected void editActionPerformed(ActionEvent e)
+	protected void editActionPerformed(final ActionEvent e)
 	{
 		final UUID id = (UUID) this.tableModel.getValueAt(this.table.getSelectedRow(), 0);
 		new NewStudentView(this, StudentCache.getInstance().getStudent(id), id);
