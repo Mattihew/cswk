@@ -69,6 +69,7 @@ public abstract class TableFrame<E> extends JFrame
 				TableFrame.this.editActionPerformed(e);
 			}
 		});
+		this.setVisible(true);
 	}
 	
 	protected abstract void newActionPerformed(final ActionEvent e);

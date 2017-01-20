@@ -59,8 +59,6 @@ public abstract class EditDialog<E> extends JDialog
 				EditDialog.this.dispatchEvent(new WindowEvent(EditDialog.this, WindowEvent.WINDOW_CLOSING));
 			}
 		});
-		
-		this.setVisible(true);
 	}
 	
 	protected abstract void okActionPerformed(final List<JTextField> textFields, final ActionEvent e);

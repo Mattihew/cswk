@@ -11,8 +11,8 @@ import java.util.UUID;
 
 import javax.swing.JTextField;
 
+import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.students.StudentCache;
 import com.mattihew.cswk.programming2.view.abstracts.EditDialog;
 
 public class NewStudentView extends EditDialog<Student>
@@ -23,20 +23,23 @@ public class NewStudentView extends EditDialog<Student>
 	private static final List<String> TABLE_HEADINGS = Collections.unmodifiableList(Arrays.asList("First Name:", "Last Name:", "Phone Num:"));
 	
 	private final UUID id;
+	
+	private final UIController<Student> controller;
 
-	public NewStudentView(final Frame owner)
+	public NewStudentView(final Frame owner, final UIController<Student> controller)
 	{
-		this(owner, null, null);
+		this(owner, controller, null, null);
 	}
 	
-	public NewStudentView(final Frame owner, final Student student)
+	public NewStudentView(final Frame owner, final UIController<Student> controller, final Student student)
 	{
-		this(owner, student, null);
+		this(owner, controller, student, null);
 	}
 	
-	public NewStudentView(final Frame owner, final Student student, final UUID existingId)
+	public NewStudentView(final Frame owner, final UIController<Student> controller, final Student student, final UUID existingId)
 	{
 		super(owner, "New Student", student);
+		this.controller = controller;
 		this.id = existingId;
 	}
 
@@ -63,15 +66,7 @@ public class NewStudentView extends EditDialog<Student>
 				textItr.next().getText(), // First Name
 				textItr.next().getText(), // Last Name
 				textItr.next().getText()); // Phone Num
-		if (Objects.isNull(this.id))
-		{
-			StudentCache.getInstance().addStudent(student);
-		}
-		else
-		{
-			StudentCache.getInstance().putStudent(this.id, student);
-		}
-		
+		this.controller.createRecord(student, this.id);
 	}
 	
 	
