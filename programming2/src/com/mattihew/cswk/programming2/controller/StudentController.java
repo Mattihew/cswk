@@ -1,21 +1,24 @@
 package com.mattihew.cswk.programming2.controller;
 
-import java.util.Objects;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
+import com.mattihew.cswk.programming2.controller.undo.CreateStudentCommand;
+import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
 import com.mattihew.cswk.programming2.view.StudentsView;
 
 public class StudentController implements UIController<Student>
 {
+	private final UndoController undoController;
 	private StudentsView frame;
 	
 	public StudentController()
 	{
 		StudentCache.getInstance().addStudent(new Student("Matt","Rayner","01234567890"));
 		StudentCache.getInstance().addStudent(new Student("Test1","Test2","123"));
+		this.undoController = new UndoController();
 	}
 	
 	public void showUI()
@@ -24,22 +27,20 @@ public class StudentController implements UIController<Student>
 	}
 
 	@Override
-	public void createRecord(final Student element)
+	public void createRecord(final Student student)
 	{
-		// TODO Auto-generated method stub
-		
+		this.createRecord(student, null);
 	}
 
 	@Override
 	public void createRecord(final Student student, final UUID id)
 	{
-		if (Objects.isNull(id))
-		{
-			StudentCache.getInstance().addStudent(student);
-		}
-		else
-		{
-			StudentCache.getInstance().putStudent(id, student);
-		}
+		this.undoController.doCommand(new CreateStudentCommand(student, id));
+	}
+	
+	@Override
+	public UndoController getUndoController()
+	{
+		return this.undoController;
 	}
 }

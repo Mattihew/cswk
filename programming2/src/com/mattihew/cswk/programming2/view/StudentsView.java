@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
@@ -24,7 +25,7 @@ public class StudentsView extends TableFrame<Student> implements Observer
 	 */
 	public StudentsView(final UIController<Student> controller)
 	{
-		super("Students", "Student", Arrays.asList("First Name","Last Name", "Phone Number"));
+		super("Students", "Student", Arrays.asList("First Name","Last Name", "Phone Number"), controller.getUndoController());
 		this.controller = controller;
 		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getStudents().entrySet())
 		{
@@ -45,9 +46,16 @@ public class StudentsView extends TableFrame<Student> implements Observer
 		{
 			if (this.tableModel.getValueAt(i, 0).equals(id))
 			{
-				this.tableModel.setValueAt(student.getFirstName(),i, 1);
-				this.tableModel.setValueAt(student.getLastName(), i, 2);
-				this.tableModel.setValueAt(student.getPhoneNum(), i, 3);
+				if (Objects.isNull(student))
+				{
+					this.tableModel.removeRow(i);
+				}
+				else
+				{
+					this.tableModel.setValueAt(student.getFirstName(),i, 1);
+					this.tableModel.setValueAt(student.getLastName(), i, 2);
+					this.tableModel.setValueAt(student.getPhoneNum(), i, 3);
+				}
 				return;
 			}
 		}
