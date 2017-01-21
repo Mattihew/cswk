@@ -11,21 +11,22 @@ public class UndoController
 	
 	public UndoController()
 	{
-		this.history =  new LinkedList<>();
+		this.history = new LinkedList<>();
 		this.iterator = this.history.listIterator();
 	}
 	
-	public void doCommand(final Command command)
+	public synchronized void doCommand(final Command command)
 	{
 		this.iterator.add(command);
 		while (this.iterator.hasNext())
 		{
+			this.iterator.next();
 			this.iterator.remove();
 		}
 		command.doCommand();
 	}
 	
-	public void undoCommand()
+	public synchronized void undoCommand()
 	{
 		if (this.iterator.hasPrevious())
 		{
@@ -33,7 +34,7 @@ public class UndoController
 		}
 	}
 	
-	public void redoCommand()
+	public synchronized void redoCommand()
 	{
 		if (this.iterator.hasNext())
 		{
@@ -41,17 +42,17 @@ public class UndoController
 		}
 	}
 	
-	public boolean canUndo()
+	public synchronized boolean canUndo()
 	{
 		return this.iterator.hasPrevious();
 	}
 	
-	public boolean canRedo()
+	public synchronized boolean canRedo()
 	{
 		return this.iterator.hasNext();
 	}
 	
-	public String nextUndoTitle()
+	public synchronized String nextUndoTitle()
 	{
 		String result = null;
 		if (this.iterator.hasPrevious())
@@ -62,7 +63,7 @@ public class UndoController
 		return result;
 	}
 	
-	public String nextRedoTitle()
+	public synchronized String nextRedoTitle()
 	{
 		String result = null;
 		if (this.iterator.hasNext())
