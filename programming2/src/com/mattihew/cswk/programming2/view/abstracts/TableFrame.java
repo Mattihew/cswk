@@ -74,6 +74,7 @@ public abstract class TableFrame<E> extends JFrame
 		menuBar.add(mnInsert);
 		
 		JMenuItem mntmNewItem = new JMenuItem("New " + itemName);
+		mnInsert.add(mntmNewItem);
 		mntmNewItem.addActionListener(new ActionListener()
 		{
 			@Override
@@ -82,7 +83,7 @@ public abstract class TableFrame<E> extends JFrame
 				TableFrame.this.newActionPerformed(e);
 			}
 		});
-		mnInsert.add(mntmNewItem);
+		
 		final List<String> headings = new LinkedList<String>(tableHeadings);
 		headings.add(0, "ID");
 		this.tableModel = new UneditableDefaultTableModel(headings.toArray(), 0);
@@ -102,12 +103,24 @@ public abstract class TableFrame<E> extends JFrame
 				TableFrame.this.editActionPerformed(e);
 			}
 		});
+		
+		JMenuItem mntmRemove = new JMenuItem("Remove");
+		popupMenu.add(mntmRemove);
+		mntmRemove.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e)
+			{
+				TableFrame.this.removeActionPerformed(e);
+			}
+		});
 		this.setVisible(true);
 	}
 	
 	protected abstract void newActionPerformed(final ActionEvent e);
 	
 	protected abstract void editActionPerformed(final ActionEvent e);
+	
+	protected abstract void removeActionPerformed(final ActionEvent e);
 
 	
 	private static void addPopup(final JTable table, final JPopupMenu popup) {

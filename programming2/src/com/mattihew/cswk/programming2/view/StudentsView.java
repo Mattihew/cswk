@@ -91,4 +91,11 @@ public class StudentsView extends TableFrame<Student> implements Observer
 		final NewStudentView newStudent = new NewStudentView(this, this.controller, StudentCache.getInstance().getStudent(id), id);
 		newStudent.setVisible(true);
 	}
+
+	@Override
+	protected void removeActionPerformed(final ActionEvent e)
+	{
+		final UUID id = (UUID) this.tableModel.getValueAt(this.table.getSelectedRow(), 0);
+		this.controller.removeRecord(id);
+	}
 }

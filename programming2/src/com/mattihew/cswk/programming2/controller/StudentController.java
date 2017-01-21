@@ -3,6 +3,7 @@ package com.mattihew.cswk.programming2.controller;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
+import com.mattihew.cswk.programming2.controller.undo.RemoveStudentCommand;
 import com.mattihew.cswk.programming2.controller.undo.StoreStudentCommand;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.students.Student;
@@ -36,6 +37,12 @@ public class StudentController implements UIController<Student>
 	public void createRecord(final Student student, final UUID id)
 	{
 		this.undoController.doCommand(new StoreStudentCommand(student, id));
+	}
+	
+	@Override
+	public void removeRecord(final UUID id)
+	{
+		this.undoController.doCommand(new RemoveStudentCommand(id));
 	}
 	
 	@Override

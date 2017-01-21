@@ -10,5 +10,7 @@ public interface UIController<E>
 	
 	void createRecord(final E element, final UUID id);
 	
+	void removeRecord(final UUID id);
+	
 	UndoController getUndoController();
 }
