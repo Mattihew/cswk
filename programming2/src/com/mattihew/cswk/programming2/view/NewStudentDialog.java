@@ -25,6 +25,8 @@ public class NewStudentDialog extends EditDialog<Student>
 	private final UUID id;
 	
 	private final UIController<Student> controller;
+	
+	private final boolean isEditing;
 
 	public NewStudentDialog(final Frame owner, final UIController<Student> controller)
 	{
@@ -41,6 +43,7 @@ public class NewStudentDialog extends EditDialog<Student>
 		super(owner, "New Student", student);
 		this.controller = controller;
 		this.id = existingId;
+		this.isEditing = Objects.nonNull(student);
 	}
 
 	@Override
@@ -66,7 +69,14 @@ public class NewStudentDialog extends EditDialog<Student>
 				textItr.next().getText(), // First Name
 				textItr.next().getText(), // Last Name
 				textItr.next().getText()); // Phone Num
-		this.controller.createRecord(student, this.id);
+		if (this.isEditing)
+		{
+			this.controller.editRecord(this.id, student);
+		}
+		else
+		{
+			this.controller.createRecord(student, this.id);
+		}
 	}
 	
 	

@@ -3,8 +3,9 @@ package com.mattihew.cswk.programming2.controller.undo;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Observable;
 
-public class UndoController
+public class UndoController extends Observable
 {
 	private final List<Command> history;
 	private final ListIterator<Command> iterator;
@@ -24,6 +25,8 @@ public class UndoController
 			this.iterator.remove();
 		}
 		command.doCommand();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	public synchronized void undoCommand()
@@ -31,6 +34,8 @@ public class UndoController
 		if (this.iterator.hasPrevious())
 		{
 			this.iterator.previous().undoCommand();
+			this.setChanged();
+			this.notifyObservers();
 		}
 	}
 	
@@ -39,6 +44,8 @@ public class UndoController
 		if (this.iterator.hasNext())
 		{
 			this.iterator.next().doCommand();
+			this.setChanged();
+			this.notifyObservers();
 		}
 	}
 	
@@ -54,7 +61,7 @@ public class UndoController
 	
 	public synchronized String nextUndoTitle()
 	{
-		String result = null;
+		String result = "";
 		if (this.iterator.hasPrevious())
 		{
 			result = this.iterator.previous().getTitle();
@@ -65,7 +72,7 @@ public class UndoController
 	
 	public synchronized String nextRedoTitle()
 	{
-		String result = null;
+		String result = "";
 		if (this.iterator.hasNext())
 		{
 			result = this.iterator.next().getTitle();

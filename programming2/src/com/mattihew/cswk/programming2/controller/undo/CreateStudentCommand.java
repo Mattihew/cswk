@@ -6,18 +6,18 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
 
-public class StoreStudentCommand implements Command
+public class CreateStudentCommand implements Command
 {
 	private final Student newStudent;
 	private Student oldStudent;
 	private UUID id;
 	
-	public StoreStudentCommand(final Student student)
+	public CreateStudentCommand(final Student student)
 	{
 		this(student, null);
 	}
 	
-	public StoreStudentCommand(final Student student, final UUID id)
+	public CreateStudentCommand(final Student student, final UUID id)
 	{
 		this.newStudent = Objects.requireNonNull(student, "Student required for creation");
 		this.id = id;

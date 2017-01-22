@@ -12,6 +12,8 @@ public interface UIController<E>
 	
 	void createRecord(final E element, final UUID id);
 	
+	void editRecord(final UUID id, final E element);
+	
 	void removeRecord(final UUID id);
 	
 	Panel getUIPanel(final Frame owner);

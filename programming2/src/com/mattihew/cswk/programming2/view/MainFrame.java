@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -15,10 +17,14 @@ import javax.swing.JTabbedPane;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 
-public class MainFrame extends JFrame
+public class MainFrame extends JFrame implements Observer
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
+	
+	private JMenuItem mntmUndo;
+	
+	private JMenuItem mntmRedo;
 	
 	/**
 	 * Create the frame.
@@ -33,14 +39,15 @@ public class MainFrame extends JFrame
 		JMenuBar menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		
-		if (!Objects.isNull(undoController))
+		if (Objects.nonNull(undoController))
 		{
 			JMenu mnEdit = new JMenu("Edit");
 			menuBar.add(mnEdit);
 			
-			JMenuItem mntmUndo = new JMenuItem("Undo");
-			mnEdit.add(mntmUndo);
-			mntmUndo.addActionListener(new ActionListener() {
+			this.mntmUndo = new JMenuItem("Undo");
+			this.mntmUndo.setEnabled(false);
+			mnEdit.add(this.mntmUndo);
+			this.mntmUndo.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e)
 				{
@@ -48,9 +55,10 @@ public class MainFrame extends JFrame
 				}
 			});
 			
-			JMenuItem mntmRedo = new JMenuItem("Redo");
-			mnEdit.add(mntmRedo);
-			mntmRedo.addActionListener(new ActionListener() {
+			this.mntmRedo = new JMenuItem("Redo");
+			this.mntmRedo.setEnabled(false);
+			mnEdit.add(this.mntmRedo);
+			this.mntmRedo.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e)
 				{
@@ -59,7 +67,7 @@ public class MainFrame extends JFrame
 			});
 		}
 		
-		if (!controllers.isEmpty())
+		if (Objects.nonNull(controllers) && !controllers.isEmpty())
 		{
 			JMenu mnInsert = new JMenu("Insert");
 			menuBar.add(mnInsert);
@@ -85,7 +93,26 @@ public class MainFrame extends JFrame
 		{
 			tabs.addTab(controller.getItemName() + "s", controller.getUIPanel(this));
 		}
-		
+		undoController.addObserver(this);
 		this.setVisible(true);
+	}
+
+	@Override
+	public void update(final Observable o, final Object arg)
+	{
+		if (o instanceof UndoController)
+		{
+			final UndoController undoContoller = (UndoController) o;
+			if (Objects.nonNull(this.mntmUndo))
+			{
+				this.mntmUndo.setEnabled(undoContoller.canUndo());
+				this.mntmUndo.setText("Undo " + undoContoller.nextUndoTitle());
+			}
+			if (Objects.nonNull(this.mntmRedo))
+			{
+				this.mntmRedo.setEnabled(undoContoller.canRedo());
+				this.mntmRedo.setText("Redo " + undoContoller.nextRedoTitle());
+			}
+		}
 	}
 }

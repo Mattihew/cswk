@@ -6,8 +6,9 @@ import java.awt.Panel;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
+import com.mattihew.cswk.programming2.controller.undo.CreateStudentCommand;
+import com.mattihew.cswk.programming2.controller.undo.EditStudentCommand;
 import com.mattihew.cswk.programming2.controller.undo.RemoveStudentCommand;
-import com.mattihew.cswk.programming2.controller.undo.StoreStudentCommand;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
@@ -53,7 +54,13 @@ public class StudentController implements UIController<Student>
 	@Override
 	public void createRecord(final Student student, final UUID id)
 	{
-		this.undoController.doCommand(new StoreStudentCommand(student, id));
+		this.undoController.doCommand(new CreateStudentCommand(student, id));
+	}
+	
+	@Override
+	public void editRecord(final UUID id, final Student student)
+	{
+		this.undoController.doCommand(new EditStudentCommand(id, student));
 	}
 	
 	@Override
