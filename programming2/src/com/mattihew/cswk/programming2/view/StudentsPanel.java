@@ -1,5 +1,6 @@
 package com.mattihew.cswk.programming2.view;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,26 +13,30 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
-import com.mattihew.cswk.programming2.view.abstracts.TableFrame;
+import com.mattihew.cswk.programming2.view.abstracts.TablePanel;
 
-public class StudentsView extends TableFrame<Student> implements Observer
+public class StudentsPanel extends TablePanel implements Observer
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
 
 	private final UIController<Student> controller;
+	
+	private final Frame owner;
 	/**
 	 * Create the frame.
 	 */
-	public StudentsView(final UIController<Student> controller)
+	public StudentsPanel(final Frame owner, final UIController<Student> controller)
 	{
-		super("Students", "Student", Arrays.asList("First Name","Last Name", "Phone Number"), controller.getUndoController());
+		super(Arrays.asList("First Name","Last Name", "Phone Number"));
+		this.owner = owner;
 		this.controller = controller;
 		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getStudents().entrySet())
 		{
 			this.addToTable(studentEntry.getKey(), studentEntry.getValue());
 		}
 		StudentCache.getInstance().addObserver(this);
+		this.setVisible(true);
 	}
 	
 	private void addToTable(final UUID id, final Student student)
@@ -78,17 +83,10 @@ public class StudentsView extends TableFrame<Student> implements Observer
 	}
 
 	@Override
-	protected void newActionPerformed(final ActionEvent e)
-	{
-		final NewStudentView newStudent = new NewStudentView(this, this.controller);
-		newStudent.setVisible(true);
-	}
-
-	@Override
 	protected void editActionPerformed(final ActionEvent e)
 	{
 		final UUID id = (UUID) this.tableModel.getValueAt(this.table.getSelectedRow(), 0);
-		final NewStudentView newStudent = new NewStudentView(this, this.controller, StudentCache.getInstance().getStudent(id), id);
+		final NewStudentDialog newStudent = new NewStudentDialog(this.owner, this.controller, StudentCache.getInstance().getStudent(id), id);
 		newStudent.setVisible(true);
 	}
 

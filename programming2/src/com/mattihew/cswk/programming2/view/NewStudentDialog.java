@@ -15,7 +15,7 @@ import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.view.abstracts.EditDialog;
 
-public class NewStudentView extends EditDialog<Student>
+public class NewStudentDialog extends EditDialog<Student>
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = -4888205041366029324L;
@@ -26,17 +26,17 @@ public class NewStudentView extends EditDialog<Student>
 	
 	private final UIController<Student> controller;
 
-	public NewStudentView(final Frame owner, final UIController<Student> controller)
+	public NewStudentDialog(final Frame owner, final UIController<Student> controller)
 	{
 		this(owner, controller, null, null);
 	}
 	
-	public NewStudentView(final Frame owner, final UIController<Student> controller, final Student student)
+	public NewStudentDialog(final Frame owner, final UIController<Student> controller, final Student student)
 	{
 		this(owner, controller, student, null);
 	}
 	
-	public NewStudentView(final Frame owner, final UIController<Student> controller, final Student student, final UUID existingId)
+	public NewStudentDialog(final Frame owner, final UIController<Student> controller, final Student student, final UUID existingId)
 	{
 		super(owner, "New Student", student);
 		this.controller = controller;
@@ -48,12 +48,12 @@ public class NewStudentView extends EditDialog<Student>
 	{
 		if (Objects.isNull(student))
 		{
-			this.setValues(NewStudentView.TABLE_HEADINGS);
+			this.setValues(NewStudentDialog.TABLE_HEADINGS);
 		}
 		else
 		{
 			this.setTitle("Edit Student");
-			this.setValues(NewStudentView.TABLE_HEADINGS,
+			this.setValues(NewStudentDialog.TABLE_HEADINGS,
 					Arrays.asList(student.getFirstName(), student.getLastName(), student.getPhoneNum()));
 		}
 	}

@@ -1,16 +1,20 @@
 package com.mattihew.cswk.programming2.controller.interfaces;
 
+import java.awt.Frame;
+import java.awt.Panel;
 import java.util.UUID;
-
-import com.mattihew.cswk.programming2.controller.undo.UndoController;
 
 public interface UIController<E>
 {
+	String getItemName();
+	
 	void createRecord(final E element);
 	
 	void createRecord(final E element, final UUID id);
 	
 	void removeRecord(final UUID id);
 	
-	UndoController getUndoController();
+	Panel getUIPanel(final Frame owner);
+	
+	void insertNewItem(final Frame owner);
 }
