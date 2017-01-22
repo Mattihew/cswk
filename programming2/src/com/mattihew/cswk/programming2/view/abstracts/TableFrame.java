@@ -1,6 +1,7 @@
 package com.mattihew.cswk.programming2.view.abstracts;
 
 import java.awt.BorderLayout;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,6 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -34,6 +36,7 @@ public abstract class TableFrame<E> extends JFrame
 	
 	/**
 	 * Create the frame.
+	 * @wbp.parser.constructor
 	 */
 	public TableFrame(final String title, final String itemName, final List<String> tableHeadings, final UndoController undoController)
 	{
@@ -84,12 +87,17 @@ public abstract class TableFrame<E> extends JFrame
 			}
 		});
 		
+		final JTabbedPane tabs = new JTabbedPane();
+		this.getContentPane().add(tabs, BorderLayout.CENTER);
+		final Panel panel = new Panel(new BorderLayout());
+		tabs.addTab("test", panel);
+		
 		final List<String> headings = new LinkedList<String>(tableHeadings);
 		headings.add(0, "ID");
 		this.tableModel = new UneditableDefaultTableModel(headings.toArray(), 0);
 		this.table = new JTable(this.tableModel);
-		this.getContentPane().add(this.table.getTableHeader(), BorderLayout.NORTH);
-		this.getContentPane().add(this.table, BorderLayout.CENTER);
+		panel.add(this.table.getTableHeader(), BorderLayout.NORTH);
+		panel.add(this.table, BorderLayout.CENTER);
 		
 		JPopupMenu popupMenu = new JPopupMenu();
 		TableFrame.addPopup(this.table, popupMenu);
