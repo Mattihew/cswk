@@ -6,7 +6,9 @@ import javax.swing.table.DefaultTableModel;
 
 public class UneditableDefaultTableModel extends DefaultTableModel
 {
-	
+	/** serialVersionUID. */
+	private static final long serialVersionUID = 2158894575728949244L;
+
 	/**
 	 * Class Constructor.
 	 *
