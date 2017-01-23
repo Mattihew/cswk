@@ -3,6 +3,7 @@ package com.mattihew.cswk.programming2.controller.undo;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Observable;
 
 public class UndoController extends Observable
@@ -29,24 +30,18 @@ public class UndoController extends Observable
 		this.notifyObservers();
 	}
 	
-	public synchronized void undoCommand()
+	public synchronized void undoCommand() throws NoSuchElementException
 	{
-		if (this.iterator.hasPrevious())
-		{
-			this.iterator.previous().undoCommand();
-			this.setChanged();
-			this.notifyObservers();
-		}
+		this.iterator.previous().undoCommand();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
-	public synchronized void redoCommand()
+	public synchronized void redoCommand() throws NoSuchElementException
 	{
-		if (this.iterator.hasNext())
-		{
-			this.iterator.next().redoCommand();
-			this.setChanged();
-			this.notifyObservers();
-		}
+		this.iterator.next().redoCommand();
+		this.setChanged();
+		this.notifyObservers();
 	}
 	
 	public synchronized boolean canUndo()
