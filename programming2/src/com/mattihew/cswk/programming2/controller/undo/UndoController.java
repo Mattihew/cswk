@@ -8,8 +8,8 @@ import java.util.Observable;
 
 public class UndoController extends Observable
 {
-	private final List<Command> history;
-	private final ListIterator<Command> iterator;
+	private final List<UndoableAction> history;
+	private final ListIterator<UndoableAction> iterator;
 	
 	public UndoController()
 	{
@@ -17,7 +17,7 @@ public class UndoController extends Observable
 		this.iterator = this.history.listIterator();
 	}
 	
-	public synchronized void doCommand(final Command command)
+	public synchronized void doCommand(final UndoableAction command)
 	{
 		this.iterator.add(command);
 		while (this.iterator.hasNext())
@@ -25,21 +25,21 @@ public class UndoController extends Observable
 			this.iterator.next();
 			this.iterator.remove();
 		}
-		command.doCommand();
+		command.doAction();
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
 	public synchronized void undoCommand() throws NoSuchElementException
 	{
-		this.iterator.previous().undoCommand();
+		this.iterator.previous().undoAction();
 		this.setChanged();
 		this.notifyObservers();
 	}
 	
 	public synchronized void redoCommand() throws NoSuchElementException
 	{
-		this.iterator.next().redoCommand();
+		this.iterator.next().redoAction();
 		this.setChanged();
 		this.notifyObservers();
 	}

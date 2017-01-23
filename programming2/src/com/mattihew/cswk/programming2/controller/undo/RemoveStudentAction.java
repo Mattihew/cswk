@@ -5,23 +5,23 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
 
-public class RemoveStudentCommand implements Command
+public class RemoveStudentAction implements UndoableAction
 {
 	private final UUID id;
 	private Student oldStudent;
-	public RemoveStudentCommand(final UUID id)
+	public RemoveStudentAction(final UUID id)
 	{
 		this.id = id;
 	}
 	
 	@Override
-	public void doCommand()
+	public void doAction()
 	{
 		this.oldStudent = StudentCache.getInstance().removeStudent(this.id);
 	}
 
 	@Override
-	public void undoCommand()
+	public void undoAction()
 	{
 		StudentCache.getInstance().putStudent(this.id, this.oldStudent);
 	}

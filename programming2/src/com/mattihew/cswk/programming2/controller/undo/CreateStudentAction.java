@@ -6,25 +6,43 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
 
-public class CreateStudentCommand implements Command
+/**
+ * Adds a student to the student storage.
+ * 
+ * @author Matt Rayner
+ */
+public class CreateStudentAction implements UndoableAction
 {
 	private final Student newStudent;
 	private Student oldStudent;
 	private UUID id;
 	
-	public CreateStudentCommand(final Student student)
+	/**
+	 * Class Constructor.
+	 *
+	 * @param student the new student to add.
+	 */
+	public CreateStudentAction(final Student student)
 	{
 		this(student, null);
 	}
 	
-	public CreateStudentCommand(final Student student, final UUID id)
+	/**
+	 * Class Constructor.
+	 * 
+	 * Potentially use {@link EditStudentAction#EditStudentAction(UUID, Student)} instead.
+	 * 
+	 * @param student the new student to add.
+	 * @param id the id to assign to the student.
+	 */
+	public CreateStudentAction(final Student student, final UUID id)
 	{
 		this.newStudent = Objects.requireNonNull(student, "Student required for creation");
 		this.id = id;
 	}
 	
 	@Override
-	public void doCommand()
+	public void doAction()
 	{
 		if (Objects.isNull(this.id))
 		{
@@ -38,7 +56,7 @@ public class CreateStudentCommand implements Command
 	}
 
 	@Override
-	public void undoCommand()
+	public void undoAction()
 	{
 		if (Objects.isNull(this.oldStudent))
 		{
