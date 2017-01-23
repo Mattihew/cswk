@@ -43,7 +43,7 @@ public class UndoController extends Observable
 	{
 		if (this.iterator.hasNext())
 		{
-			this.iterator.next().doCommand();
+			this.iterator.next().redoCommand();
 			this.setChanged();
 			this.notifyObservers();
 		}

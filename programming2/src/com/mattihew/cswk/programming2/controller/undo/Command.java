@@ -6,5 +6,10 @@ public interface Command
 	
 	void undoCommand();
 	
+	default void redoCommand()
+	{
+		this.doCommand();
+	}
+	
 	String getTitle();
 }
