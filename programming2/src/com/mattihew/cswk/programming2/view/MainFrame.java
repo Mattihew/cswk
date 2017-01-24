@@ -13,7 +13,10 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import com.mattihew.cswk.programming2.controller.MainController;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 
@@ -26,11 +29,13 @@ public class MainFrame extends JFrame implements Observer
 	
 	private JMenuItem mntmRedo;
 	
+	private int selectedTabIndex;
+	
 	/**
 	 * Create the frame.
 	 * @wbp.parser.constructor
 	 */
-	public MainFrame(final UndoController undoController, final Collection<UIController<?>> controllers)
+	public MainFrame(final MainController mainController, final UndoController undoController, final Collection<UIController<?>> controllers)
 	{
 		super("Trip Manager");
 		this.setBounds(100, 100, 450, 300);
@@ -88,6 +93,14 @@ public class MainFrame extends JFrame implements Observer
 		}
 		
 		final JTabbedPane tabs = new JTabbedPane();
+		tabs.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e)
+			{
+				mainController.tabChanged(tabs, MainFrame.this.selectedTabIndex);
+				MainFrame.this.selectedTabIndex = tabs.getSelectedIndex();
+			}
+		});
 		this.getContentPane().add(tabs, BorderLayout.CENTER);
 		for (UIController<?> controller : controllers)
 		{

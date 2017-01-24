@@ -1,5 +1,6 @@
 package com.mattihew.cswk.programming2.controller.undo;
 
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -11,6 +12,9 @@ public class UndoController extends Observable
 	private final List<UndoableAction> history;
 	private final ListIterator<UndoableAction> iterator;
 	
+	private boolean isUndoing;
+	private boolean isRedoing;
+	
 	public UndoController()
 	{
 		this.history = new LinkedList<>();
@@ -19,6 +23,10 @@ public class UndoController extends Observable
 	
 	public synchronized void doCommand(final UndoableAction command)
 	{
+		if (this.isUndoing || this.isRedoing)
+		{
+			throw new ConcurrentModificationException("Cannot add new actions while undoing or redoing another action");
+		}
 		this.iterator.add(command);
 		while (this.iterator.hasNext())
 		{
@@ -32,16 +40,20 @@ public class UndoController extends Observable
 	
 	public synchronized void undoCommand() throws NoSuchElementException
 	{
+		this.isUndoing = true;
 		this.iterator.previous().undoAction();
 		this.setChanged();
 		this.notifyObservers();
+		this.isUndoing = false;
 	}
 	
 	public synchronized void redoCommand() throws NoSuchElementException
 	{
+		this.isRedoing = true;
 		this.iterator.next().redoAction();
 		this.setChanged();
 		this.notifyObservers();
+		this.isRedoing = false;
 	}
 	
 	public synchronized boolean canUndo()
@@ -74,5 +86,10 @@ public class UndoController extends Observable
 			this.iterator.previous();
 		}
 		return result;
+	}
+	
+	public boolean canDo()
+	{
+		return !this.isUndoing && !this.isRedoing;
 	}
 }
