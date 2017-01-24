@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Observable;
 
 public class UndoController extends Observable
@@ -12,18 +13,19 @@ public class UndoController extends Observable
 	private final List<UndoableAction> history;
 	private final ListIterator<UndoableAction> iterator;
 	
-	private boolean isUndoing;
-	private boolean isRedoing;
+	private boolean isWorking;
 	
 	public UndoController()
 	{
+		super();
 		this.history = new LinkedList<>();
 		this.iterator = this.history.listIterator();
 	}
 	
-	public synchronized void doCommand(final UndoableAction command)
+	public synchronized void doCommand(final UndoableAction command) throws ConcurrentModificationException
 	{
-		if (this.isUndoing || this.isRedoing)
+		Objects.requireNonNull(command, "command cannot be null");
+		if (this.isWorking)
 		{
 			throw new ConcurrentModificationException("Cannot add new actions while undoing or redoing another action");
 		}
@@ -40,28 +42,33 @@ public class UndoController extends Observable
 	
 	public synchronized void undoCommand() throws NoSuchElementException
 	{
-		this.isUndoing = true;
+		this.isWorking = true;
 		this.iterator.previous().undoAction();
 		this.setChanged();
 		this.notifyObservers();
-		this.isUndoing = false;
+		this.isWorking = false;
 	}
 	
 	public synchronized void redoCommand() throws NoSuchElementException
 	{
-		this.isRedoing = true;
+		this.isWorking = true;
 		this.iterator.next().redoAction();
 		this.setChanged();
 		this.notifyObservers();
-		this.isRedoing = false;
+		this.isWorking = false;
 	}
 	
-	public synchronized boolean canUndo()
+	public boolean canDo()
+	{
+		return !this.isWorking;
+	}
+	
+	public boolean canUndo()
 	{
 		return this.iterator.hasPrevious();
 	}
 	
-	public synchronized boolean canRedo()
+	public boolean canRedo()
 	{
 		return this.iterator.hasNext();
 	}
@@ -86,10 +93,5 @@ public class UndoController extends Observable
 			this.iterator.previous();
 		}
 		return result;
-	}
-	
-	public boolean canDo()
-	{
-		return !this.isUndoing && !this.isRedoing;
 	}
 }
