@@ -7,18 +7,28 @@ public class ChangeTabAction implements UndoableAction
 	private final JTabbedPane tabbedPane;
 	private final int newTab;
 	private final int oldTab;
+	private final boolean changeTabOnDoAction;
 	
 	public ChangeTabAction(final JTabbedPane tabbedPane, final int oldTabIndex)
+	{
+		this(tabbedPane, oldTabIndex, false);
+	}
+	
+	public ChangeTabAction(final JTabbedPane tabbedPane, final int oldTabIndex, final boolean changeTabNow)
 	{
 		this.tabbedPane = tabbedPane;
 		this.newTab = tabbedPane.getSelectedIndex();
 		this.oldTab = oldTabIndex;
+		this.changeTabOnDoAction = changeTabNow;
 	}
 	
 	@Override
 	public void doAction()
 	{
-		// do nothing
+		if(this.changeTabOnDoAction)
+		{
+			this.redoAction();
+		}
 	}
 
 	@Override

@@ -13,54 +13,54 @@ import java.util.Observer;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
-import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.students.StudentCache;
+import com.mattihew.cswk.programming2.model.teachers.Teacher;
+import com.mattihew.cswk.programming2.model.teachers.TeacherCache;
 import com.mattihew.cswk.programming2.view.abstracts.TablePanel;
 
-public class StudentsPanel extends TablePanel implements Observer
+public class TeachersPanel extends TablePanel implements Observer
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
 
-	private final UIController<Student> controller;
+	private final UIController<Teacher> controller;
 	
 	private final Frame owner;
 	/**
 	 * Create the frame.
 	 */
-	public StudentsPanel(final Frame owner, final UIController<Student> controller)
+	public TeachersPanel(final Frame owner, final UIController<Teacher> controller)
 	{
-		super(Arrays.asList("First Name","Last Name", "Phone Number"));
+		super(Arrays.asList("First Name","Last Name"));
 		this.owner = owner;
 		this.controller = controller;
-		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getRecords().entrySet())
+		for (final Entry<UUID, Teacher> teacherEntry : TeacherCache.getInstance().getRecords().entrySet())
 		{
-			this.addToTable(studentEntry.getKey(), studentEntry.getValue());
+			this.addToTable(teacherEntry.getKey(), teacherEntry.getValue());
 		}
-		StudentCache.getInstance().addObserver(this);
+		TeacherCache.getInstance().addObserver(this);
 		this.setVisible(true);
 	}
 	
-	private void addToTable(final UUID id, final Student student)
+	private void addToTable(final UUID id, final Teacher teacher)
 	{
-		final List<Object> data = student.toTableColumnValues();
+		final List<Object> data = teacher.toTableColumnValues();
 		data.add(0, id);
 		this.tableModel.addRow(data.toArray());
 	}
 	
-	private void replaceInTable(final UUID id, final Student student)
+	private void replaceInTable(final UUID id, final Teacher teacher)
 	{
 		for (int i = 0; i < this.tableModel.getRowCount(); i++)
 		{
 			if (this.tableModel.getValueAt(i, 0).equals(id))
 			{
-				if (Objects.isNull(student))
+				if (Objects.isNull(teacher))
 				{
 					this.tableModel.removeRow(i);
 				}
 				else
 				{
-					final List<Object> columns = student.toTableColumnValues();
+					final List<Object> columns = teacher.toTableColumnValues();
 					for (int j = 0; j < columns.size(); j++)
 					{
 						this.tableModel.setValueAt(columns.get(j),i, j+1);
@@ -69,19 +69,19 @@ public class StudentsPanel extends TablePanel implements Observer
 				return;
 			}
 		}
-		this.addToTable(id, student);
+		this.addToTable(id, teacher);
 	}
 	
 	@Override
 	public void update(final Observable o, final Object arg)
 	{
-		if (o instanceof StudentCache && arg instanceof Collection)
+		if (o instanceof TeacherCache && arg instanceof Collection)
 		{
 			for (final Object id : (Collection<?>) arg)
 			{
 				if (id instanceof UUID)
 				{
-					this.replaceInTable((UUID) id, StudentCache.getInstance().getRecord((UUID) id));
+					this.replaceInTable((UUID) id, TeacherCache.getInstance().getRecord((UUID) id));
 				}
 			}
 		}
@@ -91,8 +91,8 @@ public class StudentsPanel extends TablePanel implements Observer
 	protected void editActionPerformed(final ActionEvent e)
 	{
 		final UUID id = (UUID) this.tableModel.getValueAt(this.table.getSelectedRow(), 0);
-		final Dialog newStudent = new NewStudentDialog(this.owner, this.controller, StudentCache.getInstance().getRecord(id), id);
-		newStudent.setVisible(true);
+		final Dialog newTeacher = new NewTeacherDialog(this.owner, this.controller, TeacherCache.getInstance().getRecord(id), id);
+		newTeacher.setVisible(true);
 	}
 
 	@Override

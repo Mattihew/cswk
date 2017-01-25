@@ -1,5 +1,6 @@
 package com.mattihew.cswk.programming2.model.students;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.abstracts.Person;
@@ -7,6 +8,8 @@ import com.mattihew.cswk.programming2.model.abstracts.Person;
 public class Student extends Person implements Comparable<Student>
 {
 	private final String phone;
+	
+	private List<Object> tableColumns;
 	
 	/**
 	 * Class Constructor.
@@ -33,7 +36,7 @@ public class Student extends Person implements Comparable<Student>
 	@Override
 	public String toString()
 	{
-		return String.join("/n", super.toString(), this.phone);
+		return String.join("\n", super.toString(), this.phone);
 	}
 	
 	/**
@@ -88,5 +91,16 @@ public class Student extends Person implements Comparable<Student>
 		}
 		result = this.phone.compareTo(anotherStudent.phone);
 		return result;
+	}
+
+	@Override
+	public List<Object> toTableColumnValues()
+	{
+		if (Objects.isNull(this.tableColumns))
+		{
+			this.tableColumns = super.toTableColumnValues();
+			this.tableColumns.add(this.phone);
+		}
+		return this.tableColumns;
 	}
 }

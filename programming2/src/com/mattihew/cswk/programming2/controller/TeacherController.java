@@ -1,17 +1,28 @@
 package com.mattihew.cswk.programming2.controller;
 
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Panel;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
-import com.mattihew.cswk.programming2.model.Teacher;
+import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
+import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
+import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
+import com.mattihew.cswk.programming2.controller.undo.UndoController;
+import com.mattihew.cswk.programming2.model.teachers.Teacher;
+import com.mattihew.cswk.programming2.model.teachers.TeacherCache;
+import com.mattihew.cswk.programming2.view.NewTeacherDialog;
+import com.mattihew.cswk.programming2.view.TeachersPanel;
 
 public class TeacherController implements UIController<Teacher>
 {
-	public TeacherController()
+	private final UndoController undoController;
+	public TeacherController(final UndoController undoController)
 	{
 		super();
+		TeacherCache.getInstance().addRecord(new Teacher("teacher1", "teacher2"));
+		this.undoController = undoController;
 	}
 	
 	@Override
@@ -23,42 +34,38 @@ public class TeacherController implements UIController<Teacher>
 	@Override
 	public void createRecord(final Teacher element)
 	{
-		// TODO Auto-generated method stub
-		
+		this.createRecord(element, null);
 	}
 
 	@Override
 	public void createRecord(final Teacher element, final UUID id)
 	{
-		// TODO Auto-generated method stub
-		
+		this.undoController.doCommand(new CreateRecordAction<>(TeacherCache.getInstance(), element, id));
 	}
 
 	@Override
 	public void editRecord(final UUID id, final Teacher element)
 	{
-		// TODO Auto-generated method stub
-		
+		this.undoController.doCommand(new EditRecordAction<>(TeacherCache.getInstance(), id, element));
 	}
 
 	@Override
 	public void removeRecord(final UUID id)
 	{
-		// TODO Auto-generated method stub
-		
+		this.undoController.doCommand(new RemoveRecordAction<>(TeacherCache.getInstance(), id));
 	}
 
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
-		// TODO Auto-generated method stub
-		return new Panel();
+		return new TeachersPanel(owner, this);
 	}
 
 	@Override
 	public void insertNewItem(final Frame owner)
 	{
-		// TODO Auto-generated method stub
+		final Dialog newTeachers =  new NewTeacherDialog(owner, this);
+		newTeachers.setVisible(true);
 		
 	}
 

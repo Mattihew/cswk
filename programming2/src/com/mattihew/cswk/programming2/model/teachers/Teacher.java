@@ -1,4 +1,4 @@
-package com.mattihew.cswk.programming2.model;
+package com.mattihew.cswk.programming2.model.teachers;
 
 import com.mattihew.cswk.programming2.model.abstracts.Person;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
@@ -13,5 +13,4 @@ public class Teacher extends Person implements TripProvider
 	{
 		super(firstName, lastName);
 	}
-
 }

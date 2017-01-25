@@ -6,9 +6,9 @@ import java.awt.Panel;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
-import com.mattihew.cswk.programming2.controller.undo.CreateStudentAction;
-import com.mattihew.cswk.programming2.controller.undo.EditStudentAction;
-import com.mattihew.cswk.programming2.controller.undo.RemoveStudentAction;
+import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
+import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
+import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.model.students.StudentCache;
@@ -21,8 +21,8 @@ public class StudentController implements UIController<Student>
 	
 	public StudentController(final UndoController undoController)
 	{
-		StudentCache.getInstance().addStudent(new Student("Matt","Rayner","01234567890"));
-		StudentCache.getInstance().addStudent(new Student("Test1","Test2","123"));
+		StudentCache.getInstance().addRecord(new Student("Matt","Rayner","01234567890"));
+		StudentCache.getInstance().addRecord(new Student("Test1","Test2","123"));
 		this.undoController = undoController;
 	}
 	
@@ -54,18 +54,18 @@ public class StudentController implements UIController<Student>
 	@Override
 	public void createRecord(final Student student, final UUID id)
 	{
-		this.undoController.doCommand(new CreateStudentAction(student, id));
+		this.undoController.doCommand(new CreateRecordAction<>(StudentCache.getInstance(), student, id));
 	}
 	
 	@Override
 	public void editRecord(final UUID id, final Student student)
 	{
-		this.undoController.doCommand(new EditStudentAction(id, student));
+		this.undoController.doCommand(new EditRecordAction<>(StudentCache.getInstance(),id, student));
 	}
 	
 	@Override
 	public void removeRecord(final UUID id)
 	{
-		this.undoController.doCommand(new RemoveStudentAction(id));
+		this.undoController.doCommand(new RemoveRecordAction<>(StudentCache.getInstance(), id));
 	}
 }
