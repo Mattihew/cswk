@@ -13,4 +13,9 @@ public class Teacher extends Person implements TripProvider
 	{
 		super(firstName, lastName);
 	}
+	
+	public static Teacher FromTableColumnValues(final Object[] values)
+	{
+		return new Teacher((String) values[0], (String) values[1]);
+	}
 }

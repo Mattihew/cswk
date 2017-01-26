@@ -79,7 +79,7 @@ public class MainFrame extends JFrame implements Observer
 			
 			for (UIController<?> controller : controllers)
 			{
-				JMenuItem mntmNewItem = new JMenuItem("New " + controller.getItemName());
+				JMenuItem mntmNewItem = new JMenuItem("New " + controller.getRecordName());
 				mnInsert.add(mntmNewItem);
 				mntmNewItem.addActionListener(new ActionListener()
 				{
@@ -104,7 +104,7 @@ public class MainFrame extends JFrame implements Observer
 		this.getContentPane().add(tabs, BorderLayout.CENTER);
 		for (UIController<?> controller : controllers)
 		{
-			tabs.addTab(controller.getItemName() + "s", controller.getUIPanel(this));
+			tabs.addTab(controller.getRecordNamePlural(), controller.getUIPanel(this));
 		}
 		undoController.addObserver(this);
 		this.setVisible(true);

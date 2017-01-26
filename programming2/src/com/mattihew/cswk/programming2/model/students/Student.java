@@ -1,5 +1,6 @@
 package com.mattihew.cswk.programming2.model.students;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +22,11 @@ public class Student extends Person implements Comparable<Student>
 	{
 		super(firstName, lastName);
 		this.phone = phone;
+	}
+	
+	public static Student fromTableColumnValues(final Object[] values)
+	{
+		return new Student((String) values[0], (String) values[1], (String) values[2]);
 	}
 	
 	public String getPhoneNum()
@@ -101,6 +107,6 @@ public class Student extends Person implements Comparable<Student>
 			this.tableColumns = super.toTableColumnValues();
 			this.tableColumns.add(this.phone);
 		}
-		return this.tableColumns;
+		return Collections.unmodifiableList(this.tableColumns);
 	}
 }

@@ -8,14 +8,16 @@ import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
 public class EditRecordAction<R> implements UndoableAction
 {
 	private final RecordCache<R> recordCache;
+	private final String recordName;
 	private final UUID id;
 	private final R newRecord;
 	private R oldRecord;
 	
 	
-	public EditRecordAction(final RecordCache<R> recordCache, final UUID id, final R record)
+	public EditRecordAction(final RecordCache<R> recordCache, final String recordName, final UUID id, final R record)
 	{
 		this.recordCache = Objects.requireNonNull(recordCache, "Record cache required for editing");
+		this.recordName = recordName;
 		this.newRecord = Objects.requireNonNull(record, "Student required for editing");
 		this.id = Objects.requireNonNull(id, "Id of student Required");
 	}
@@ -42,7 +44,7 @@ public class EditRecordAction<R> implements UndoableAction
 	@Override
 	public String getTitle()
 	{
-		return "Edit " + this.recordCache.getRecordName();
+		return "Edit " + this.recordName;
 	}
 
 }

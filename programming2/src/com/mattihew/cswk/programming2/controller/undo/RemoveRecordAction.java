@@ -8,11 +8,13 @@ import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
 public class RemoveRecordAction<R> implements UndoableAction
 {
 	private final RecordCache<R> recordCache;
+	private final String recordName;
 	private final UUID id;
 	private R oldRecord;
-	public RemoveRecordAction(final RecordCache<R> recordCache, final UUID id)
+	public RemoveRecordAction(final RecordCache<R> recordCache, final String recordName, final UUID id)
 	{
 		this.recordCache = Objects.requireNonNull(recordCache, "Record Cache required for removal");
+		this.recordName = recordName;
 		this.id = Objects.requireNonNull(id, "Id of record required");
 	}
 	
@@ -31,7 +33,7 @@ public class RemoveRecordAction<R> implements UndoableAction
 	@Override
 	public String getTitle()
 	{
-		return "Remove " + this.recordCache.getRecordName();
+		return "Remove " + this.recordName;
 	}
 
 }

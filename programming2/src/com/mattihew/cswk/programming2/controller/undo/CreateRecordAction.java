@@ -13,18 +13,20 @@ import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
 public class CreateRecordAction<R> implements UndoableAction
 {
 	private final RecordCache<R> recordCache;
+	private final String recordName;
 	private final R newRecord;
 	private R oldRecord;
 	private UUID id;
 	
-	public CreateRecordAction(final RecordCache<R> recordCache, final R newRecord)
+	public CreateRecordAction(final RecordCache<R> recordCache, final String recordName, final R newRecord)
 	{
-		this(recordCache, newRecord, null);
+		this(recordCache, recordName, newRecord, null);
 	}
 	
-	public CreateRecordAction(final RecordCache<R> recordCache, final R student, final UUID id)
+	public CreateRecordAction(final RecordCache<R> recordCache, final String recordName, final R student, final UUID id)
 	{
 		this.recordCache = Objects.requireNonNull(recordCache, "Record cache required to do creation into");
+		this.recordName = recordName;
 		this.newRecord = Objects.requireNonNull(student, "New Record to be created is required");
 		this.id = id;
 	}
@@ -59,7 +61,7 @@ public class CreateRecordAction<R> implements UndoableAction
 	@Override
 	public String getTitle()
 	{
-		return "Create " + this.recordCache.getRecordName();
+		return "Create " + this.recordName;
 	}
 
 }

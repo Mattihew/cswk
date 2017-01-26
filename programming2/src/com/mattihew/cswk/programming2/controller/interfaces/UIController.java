@@ -2,21 +2,42 @@ package com.mattihew.cswk.programming2.controller.interfaces;
 
 import java.awt.Frame;
 import java.awt.Panel;
+import java.util.List;
 import java.util.UUID;
+
+import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
 
 public interface UIController<E>
 {
-	String getItemName();
+	default void createRecord (final String[] elementValues)
+	{
+		this.createRecord(elementValues, null);
+	}
 	
-	void createRecord(final E element);
+	void createRecord (final String[] elementValues, final UUID id);
+	
+	default void createRecord(final E element)
+	{
+		this.createRecord(element, null);
+	}
 	
 	void createRecord(final E element, final UUID id);
 	
 	void editRecord(final UUID id, final E element);
+	
+	void editRecord(final UUID id, final String[] elementValues);
 	
 	void removeRecord(final UUID id);
 	
 	Panel getUIPanel(final Frame owner);
 	
 	void insertNewItem(final Frame owner);
+	
+	String getRecordName();
+	
+	String getRecordNamePlural();
+	
+	RecordCache<E> getRecordCache();
+	
+	List<String> getTableHeadings();
 }

@@ -19,16 +19,4 @@ public class StudentCache extends RecordCache<Student>
 		}
 		return StudentCache.INSTANCE;
 	}
-
-	@Override
-	public String getRecordName()
-	{
-		return "Student";
-	}
-
-	@Override
-	public String getRecordNamePlural()
-	{
-		return "Students";
-	}
 }

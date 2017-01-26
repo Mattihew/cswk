@@ -57,8 +57,4 @@ public abstract class RecordCache<R> extends Observable
 		}
 		return result;
 	}
-	
-	public abstract String getRecordName();
-	
-	public abstract String getRecordNamePlural();
 }

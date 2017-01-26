@@ -3,6 +3,7 @@ package com.mattihew.cswk.programming2.view;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -43,8 +44,9 @@ public class TeachersPanel extends TablePanel implements Observer
 	
 	private void addToTable(final UUID id, final Teacher teacher)
 	{
-		final List<Object> data = teacher.toTableColumnValues();
+		final List<Object> data = new ArrayList<>();
 		data.add(0, id);
+		data.addAll(teacher.toTableColumnValues());
 		this.tableModel.addRow(data.toArray());
 	}
 	
@@ -63,7 +65,7 @@ public class TeachersPanel extends TablePanel implements Observer
 					final List<Object> columns = teacher.toTableColumnValues();
 					for (int j = 0; j < columns.size(); j++)
 					{
-						this.tableModel.setValueAt(columns.get(j),i, j+1);
+						this.tableModel.setValueAt(columns.get(j), i, j+1);
 					}
 				}
 				return;
@@ -91,7 +93,7 @@ public class TeachersPanel extends TablePanel implements Observer
 	protected void editActionPerformed(final ActionEvent e)
 	{
 		final UUID id = (UUID) this.tableModel.getValueAt(this.table.getSelectedRow(), 0);
-		final Dialog newTeacher = new NewTeacherDialog(this.owner, this.controller, TeacherCache.getInstance().getRecord(id), id);
+		final Dialog newTeacher = new EditDialog<>(this.owner, this.controller, this.controller.getRecordCache().getRecord(id), id);
 		newTeacher.setVisible(true);
 	}
 
