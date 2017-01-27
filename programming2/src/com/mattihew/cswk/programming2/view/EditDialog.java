@@ -43,7 +43,6 @@ public class EditDialog<R extends TableRecord> extends JDialog
 	{
 		super(owner, true);
 		this.setResizable(false);
-		this.setBounds(100, 100, 250, 150);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(new GridLayout(0, 2, 0, 2));
 		
@@ -93,6 +92,7 @@ public class EditDialog<R extends TableRecord> extends JDialog
 			this.getContentPane().add(txtField);
 			txtField.setColumns(10);
 		}
+		this.setBounds(100, 100, 250, 38*(labelValues.size()+1));
 	}
 	
 	private class CancelActionEvent implements ActionListener

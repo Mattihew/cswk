@@ -39,7 +39,8 @@ public class MainController
 				}
 				final StudentController studentController = new StudentController(MainController.this.undoController);
 				final TeacherController teacherController = new TeacherController(MainController.this.undoController);
-				new MainFrame(MainController.this, MainController.this.undoController, Arrays.asList(studentController, teacherController));
+				final TripController tripController = new TripController(MainController.this.undoController);
+				new MainFrame(MainController.this, MainController.this.undoController, Arrays.asList(studentController, teacherController, tripController));
 			}
 		});
 	}

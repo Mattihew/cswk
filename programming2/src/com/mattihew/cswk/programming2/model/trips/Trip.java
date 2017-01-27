@@ -1,16 +1,19 @@
 package com.mattihew.cswk.programming2.model.trips;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.mattihew.cswk.programming2.model.Booking;
+import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 import com.mattihew.cswk.programming2.model.students.Student;
 
-public class Trip
+public class Trip implements TableRecord
 {
 	private final Set<Booking> bookings;
 	
@@ -90,5 +93,11 @@ public class Trip
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<Object> toTableColumnValues()
+	{
+		return Arrays.asList((Object[]) this.getClass().getFields());
 	}
 }
