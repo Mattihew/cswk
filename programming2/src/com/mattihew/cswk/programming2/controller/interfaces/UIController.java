@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.model.RecordCache;
+import com.mattihew.cswk.programming2.model.students.Student;
 
 public interface UIController<E>
 {
@@ -33,6 +34,10 @@ public interface UIController<E>
 	
 	void insertNewItem(final Frame owner);
 	
+	void editExistingItem(Frame owner, UUID id);
+	
+	void removeExistingItem(Frame owner, UUID id);
+	
 	String getRecordName();
 	
 	String getRecordNamePlural();
@@ -40,4 +45,6 @@ public interface UIController<E>
 	RecordCache<E> getRecordCache();
 	
 	List<String> getTableHeadings();
+
+	
 }

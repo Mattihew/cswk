@@ -15,7 +15,7 @@ import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
 import com.mattihew.cswk.programming2.view.EditDialog;
-import com.mattihew.cswk.programming2.view.StudentsPanel;
+import com.mattihew.cswk.programming2.view.TablePanel;
 
 public class StudentController implements UIController<Student>
 {
@@ -33,7 +33,7 @@ public class StudentController implements UIController<Student>
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
-		return new StudentsPanel(owner, this);
+		return new TablePanel(this.getTableHeadings(), this);
 	}
 	
 	@Override
@@ -41,6 +41,19 @@ public class StudentController implements UIController<Student>
 	{
 		final Dialog newStudent = new EditDialog<>(owner, this);
 		newStudent.setVisible(true);
+	}
+
+	@Override
+	public void editExistingItem(Frame owner, UUID id)
+	{
+		final Dialog newStudent = new EditDialog<>(owner, this, this.getRecordCache().getRecord(id), id);
+		newStudent.setVisible(true);
+	}
+
+	@Override
+	public void removeExistingItem(Frame owner, UUID id)
+	{
+		this.removeRecord(id);
 	}
 
 	@Override
