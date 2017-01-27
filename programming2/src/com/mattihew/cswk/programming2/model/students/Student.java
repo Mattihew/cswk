@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.abstracts.Person;
+import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 
 public class Student extends Person implements Comparable<Student>
 {

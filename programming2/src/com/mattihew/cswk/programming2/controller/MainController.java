@@ -48,7 +48,8 @@ public class MainController
 	{
 		if (this.undoController.canDo() && tabbedPane.getSelectedIndex() != oldTabIndex)
 		{
-			this.undoController.doCommand(new ChangeTabAction(tabbedPane, oldTabIndex));
+			//this got annoying really fast.
+			//this.undoController.doCommand(new ChangeTabAction(tabbedPane, oldTabIndex));
 		}
 	}
 }

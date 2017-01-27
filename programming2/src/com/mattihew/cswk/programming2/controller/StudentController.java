@@ -1,23 +1,17 @@
 package com.mattihew.cswk.programming2.controller;
 
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.Panel;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.view.EditDialog;
-import com.mattihew.cswk.programming2.view.TablePanel;
 
-public class StudentController implements UIController<Student>
+public class StudentController extends TablePanelUIController<Student>
 {
 	private final UndoController undoController;
 	
@@ -28,32 +22,6 @@ public class StudentController implements UIController<Student>
 		this.studentCache.addRecord(new Student("Matt","Rayner","01234567890"));
 		this.studentCache.addRecord(new Student("Test1","Test2","123"));
 		this.undoController = undoController;
-	}
-	
-	@Override
-	public Panel getUIPanel(final Frame owner)
-	{
-		return new TablePanel(this.getTableHeadings(), this);
-	}
-	
-	@Override
-	public void insertNewItem(final Frame owner)
-	{
-		final Dialog newStudent = new EditDialog<>(owner, this);
-		newStudent.setVisible(true);
-	}
-
-	@Override
-	public void editExistingItem(Frame owner, UUID id)
-	{
-		final Dialog newStudent = new EditDialog<>(owner, this, this.getRecordCache().getRecord(id), id);
-		newStudent.setVisible(true);
-	}
-
-	@Override
-	public void removeExistingItem(Frame owner, UUID id)
-	{
-		this.removeRecord(id);
 	}
 
 	@Override
