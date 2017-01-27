@@ -5,7 +5,7 @@ import java.awt.Panel;
 import java.util.List;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
+import com.mattihew.cswk.programming2.model.RecordCache;
 
 public interface UIController<E>
 {

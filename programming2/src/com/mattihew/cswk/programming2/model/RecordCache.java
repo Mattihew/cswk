@@ -1,4 +1,4 @@
-package com.mattihew.cswk.programming2.model.abstracts;
+package com.mattihew.cswk.programming2.model;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.UUID;
 
-public abstract class RecordCache<R> extends Observable
+public class RecordCache<R> extends Observable
 {
 	private final Map<UUID, R> records;
 	

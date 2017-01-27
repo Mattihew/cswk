@@ -12,9 +12,8 @@ import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
-import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
+import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.teachers.Teacher;
-import com.mattihew.cswk.programming2.model.teachers.TeacherCache;
 import com.mattihew.cswk.programming2.view.EditDialog;
 import com.mattihew.cswk.programming2.view.TeachersPanel;
 
@@ -22,11 +21,11 @@ public class TeacherController implements UIController<Teacher>
 {
 	private final UndoController undoController;
 	
-	private final RecordCache<Teacher> teacherCache = TeacherCache.getInstance();
+	private final RecordCache<Teacher> teacherCache = new RecordCache<>();
 	public TeacherController(final UndoController undoController)
 	{
 		super();
-		TeacherCache.getInstance().addRecord(new Teacher("teacher1", "teacher2"));
+		this.teacherCache.addRecord(new Teacher("teacher1", "teacher2"));
 		this.undoController = undoController;
 	}
 	
@@ -57,7 +56,7 @@ public class TeacherController implements UIController<Teacher>
 	@Override
 	public void removeRecord(final UUID id)
 	{
-		this.undoController.doCommand(new RemoveRecordAction<>(TeacherCache.getInstance(), this.getRecordName(), id));
+		this.undoController.doCommand(new RemoveRecordAction<>(this.teacherCache, this.getRecordName(), id));
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class TeacherController implements UIController<Teacher>
 	@Override
 	public RecordCache<Teacher> getRecordCache()
 	{
-		return TeacherCache.getInstance();
+		return this.teacherCache;
 	}
 
 	@Override

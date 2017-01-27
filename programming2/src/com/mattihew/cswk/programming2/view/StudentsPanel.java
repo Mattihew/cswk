@@ -14,8 +14,8 @@ import java.util.Observer;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
+import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.students.StudentCache;
 import com.mattihew.cswk.programming2.view.abstracts.TablePanel;
 
 public class StudentsPanel extends TablePanel implements Observer
@@ -34,11 +34,11 @@ public class StudentsPanel extends TablePanel implements Observer
 		super(Arrays.asList("First Name","Last Name", "Phone Number"));
 		this.owner = owner;
 		this.controller = controller;
-		for (final Entry<UUID, Student> studentEntry : StudentCache.getInstance().getRecords().entrySet())
+		for (final Entry<UUID, Student> studentEntry : this.controller.getRecordCache().getRecords().entrySet())
 		{
 			this.addToTable(studentEntry.getKey(), studentEntry.getValue());
 		}
-		StudentCache.getInstance().addObserver(this);
+		this.controller.getRecordCache().addObserver(this);
 		this.setVisible(true);
 	}
 	
@@ -77,13 +77,13 @@ public class StudentsPanel extends TablePanel implements Observer
 	@Override
 	public void update(final Observable o, final Object arg)
 	{
-		if (o instanceof StudentCache && arg instanceof Collection)
+		if (o instanceof RecordCache && arg instanceof Collection)
 		{
 			for (final Object id : (Collection<?>) arg)
 			{
 				if (id instanceof UUID)
 				{
-					this.replaceInTable((UUID) id, StudentCache.getInstance().getRecord((UUID) id));
+					this.replaceInTable((UUID) id, this.controller.getRecordCache().getRecord((UUID) id));
 				}
 			}
 		}

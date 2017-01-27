@@ -3,7 +3,7 @@ package com.mattihew.cswk.programming2.controller.undo;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
+import com.mattihew.cswk.programming2.model.RecordCache;
 
 public class EditRecordAction<R> implements UndoableAction
 {

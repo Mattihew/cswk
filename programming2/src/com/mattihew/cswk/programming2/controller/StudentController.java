@@ -12,9 +12,8 @@ import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
-import com.mattihew.cswk.programming2.model.abstracts.RecordCache;
+import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.students.StudentCache;
 import com.mattihew.cswk.programming2.view.EditDialog;
 import com.mattihew.cswk.programming2.view.StudentsPanel;
 
@@ -22,12 +21,12 @@ public class StudentController implements UIController<Student>
 {
 	private final UndoController undoController;
 	
-	private final RecordCache<Student> studentCache = StudentCache.getInstance();
+	private final RecordCache<Student> studentCache = new RecordCache<>();
 	
 	public StudentController(final UndoController undoController)
 	{
-		StudentCache.getInstance().addRecord(new Student("Matt","Rayner","01234567890"));
-		StudentCache.getInstance().addRecord(new Student("Test1","Test2","123"));
+		this.studentCache.addRecord(new Student("Matt","Rayner","01234567890"));
+		this.studentCache.addRecord(new Student("Test1","Test2","123"));
 		this.undoController = undoController;
 	}
 	
