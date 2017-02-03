@@ -1,21 +1,17 @@
 package com.mattihew.cswk.programming2.model.trips;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 import com.mattihew.cswk.programming2.model.Booking;
+import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
-import com.mattihew.cswk.programming2.model.students.Student;
 
 public class Trip implements TableRecord
 {
-	private final Set<Booking> bookings;
+	private final RecordCache<Booking> bookings;
 	
 	private final String destination;
 	
@@ -24,7 +20,7 @@ public class Trip implements TableRecord
 	public Trip(final String destination, final TripProvider tripProvider)
 	{
 		super();
-		this.bookings = new HashSet<>();
+		this.bookings = new RecordCache<>();
 		this.destination = destination;
 		this.tripProvider = tripProvider;
 	}
@@ -33,22 +29,11 @@ public class Trip implements TableRecord
 	 * Add booking to trip.
 	 * 
 	 * @param booking the booking to add.
-	 * @return <tt>true</tt> (as specified by {@link Collection#add})
+	 * @return the <tt>UUID</tt> assigned to the booking or <tt>null</tt> if not stored.
 	 */
-	public boolean addBooking(final Booking booking)
+	public UUID addBooking(final Booking booking)
 	{
-		return this.bookings.add(booking);
-	}
-	
-	/**
-	 * Remove booking from trip.
-	 * 
-	 * @param booking the booking to remove.
-	 * @return <tt>true</tt> (as specified by {@link Collection#remove})
-	 */
-	public boolean removeBooking(final Booking booking)
-	{
-		return this.bookings.remove(booking);
+		return this.bookings.addRecord(booking);
 	}
 	
 	/**
@@ -56,48 +41,23 @@ public class Trip implements TableRecord
 	 * 
 	 * @return bookings for trip.
 	 */
-	public Set<Booking> getBookings()
+	public RecordCache<Booking> getBookings()
 	{
-		return Collections.unmodifiableSet(this.bookings);
-	}
-	
-	public boolean addStudent(final Student student)
-	{
-		if(!this.containsStudent(student))
-		{
-			return this.addBooking(new Booking(student, false));
-		}
-		return false;
-	}
-	
-	public boolean removeStudent(final Student student)
-	{
-		for (final Iterator<Booking> i = this.bookings.iterator(); i.hasNext();)
-		{
-			if(i.next().getStudent().equals(student))
-			{
-				i.remove();
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public boolean containsStudent(final Student student)
-	{
-		for (final Booking booking : this.bookings)
-		{
-			if (booking.getStudent().equals(student))
-			{
-				return true;
-			}
-		}
-		return false;
+		return this.bookings;
 	}
 
 	@Override
 	public List<Object> toTableColumnValues()
 	{
-		return Arrays.asList((Object[]) this.getClass().getFields());
+		final List<Object> result = new ArrayList<>();
+		result.add(this.destination);
+		result.add(this.tripProvider);
+		return result;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.destination;
 	}
 }

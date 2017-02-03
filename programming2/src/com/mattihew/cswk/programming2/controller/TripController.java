@@ -23,33 +23,33 @@ public class TripController extends TablePanelUIController<Trip>
 	}
 	
 	@Override
-	public void createRecord(String[] elementValues, UUID id)
+	public void createRecord(final Object[] elementValues, final UUID id)
 	{
 		
 		
 	}
 
 	@Override
-	public void createRecord(Trip element, UUID id)
+	public void createRecord(final Trip element, final UUID id)
 	{
 		this.undoController.doCommand(new CreateRecordAction<>(this.tripCache, this.getRecordName(), element, id));
 	}
 
 	@Override
-	public void editRecord(UUID id, Trip element)
+	public void editRecord(final UUID id, final Trip element)
 	{
 		this.undoController.doCommand(new EditRecordAction<>(this.tripCache, this.getRecordName(), id, element));
 	}
 
 	@Override
-	public void editRecord(UUID id, String[] elementValues)
+	public void editRecord(final UUID id, final Object[] elementValues)
 	{
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeRecord(UUID id)
+	public void removeRecord(final UUID id)
 	{
 		this.undoController.doCommand(new RemoveRecordAction<>(this.tripCache, this.getRecordName(), id));
 	}
@@ -75,7 +75,17 @@ public class TripController extends TablePanelUIController<Trip>
 	@Override
 	public List<String> getTableHeadings()
 	{
-		return Arrays.asList("1","2","3","4");
+		return Arrays.asList("Destination","Trip Provider");
+	}
+
+	@Override
+	public String[] comboOptions(final int attributeIndex)
+	{
+		if (attributeIndex == 1)
+		{
+			return new String[] {};
+		}
+		return null;
 	}
 
 }

@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
-import com.mattihew.cswk.programming2.controller.undo.ChangeTabAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.view.MainFrame;
 
@@ -18,9 +18,13 @@ public class MainController
 	 */
 	public static void main(final String[] args)
 	{
-		new MainController();
+		final MainController mainController = new MainController();
+		mainController.createUI();
 	}
 	
+	/**
+	 * Class Constructor.
+	 */
 	private MainController()
 	{
 		this.undoController = new UndoController();
@@ -33,16 +37,20 @@ public class MainController
 				{
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				}
-				catch (Exception e)
+				catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e)
 				{
-					
+					e.printStackTrace();
 				}
-				final StudentController studentController = new StudentController(MainController.this.undoController);
-				final TeacherController teacherController = new TeacherController(MainController.this.undoController);
-				final TripController tripController = new TripController(MainController.this.undoController);
-				new MainFrame(MainController.this, MainController.this.undoController, Arrays.asList(studentController, teacherController, tripController));
 			}
 		});
+	}
+	
+	private void createUI()
+	{
+		final StudentController studentController = new StudentController(this.undoController);
+		final TeacherController teacherController = new TeacherController(this.undoController);
+		final TripController tripController = new TripController(this.undoController);
+		new MainFrame(this, this.undoController, Arrays.asList(studentController, teacherController, tripController));
 	}
 	
 	public void tabChanged(final JTabbedPane tabbedPane, final int oldTabIndex)

@@ -14,6 +14,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -26,7 +28,8 @@ public class EditDialog<R extends TableRecord> extends JDialog
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 3975565360523394130L;
-	private final List<JTextField> textFields = new ArrayList<>();
+	private final List<JComponent> components = new ArrayList<>();
+	private final UIController<R> controller;
 	
 	public EditDialog(final Frame owner, final UIController<R> controller)
 	{
@@ -42,37 +45,38 @@ public class EditDialog<R extends TableRecord> extends JDialog
 	public EditDialog(final Frame owner, final UIController<R> controller, final R record, final UUID id)
 	{
 		super(owner, true);
+		this.controller = Objects.requireNonNull(controller, "Controller Required");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.getContentPane().setLayout(new GridLayout(0, 2, 0, 2));
 		
 		if (Objects.isNull(record))
 		{
-			this.setTitle("New " + controller.getRecordName());
-			this.setValues(controller.getTableHeadings());
+			this.setTitle("New " + this.controller.getRecordName());
+			this.setValues(this.controller.getTableHeadings());
 		}
 		else
 		{
-			this.setTitle("Edit " + controller.getRecordName());
-			this.setValues(controller.getTableHeadings(), record.toTableColumnValues());
+			this.setTitle("Edit " + this.controller.getRecordName());
+			this.setValues(this.controller.getTableHeadings(), record.toTableColumnValues());
 		}
 		
 		JButton btnOk = new JButton("OK");
 		this.getContentPane().add(btnOk);
 		this.getRootPane().setDefaultButton(btnOk);
-		btnOk.addActionListener(new OkActionEvent<>(this, controller, id, this.textFields));
+		btnOk.addActionListener(new OkActionEvent<>(this, this.controller, id, this.components));
 		
 		JButton btnCancel = new JButton("Cancel");
 		this.getContentPane().add(btnCancel);
-		btnCancel.addActionListener(new CancelActionEvent(this));
+		btnCancel.addActionListener(new CloseActionEvent(this));
 	}
 	
-	private final void setValues(final List<String> labelValues)
+	protected void setValues(final List<String> labelValues)
 	{
 		this.setValues(labelValues, Collections.emptyList());
 	}
 	
-	private final void setValues(final List<String> labelValues, final List<Object> textValues)
+	protected void setValues(final List<String> labelValues, final List<Object> textValues)
 	{
 		if (textValues.size() > labelValues.size())
 		{
@@ -83,22 +87,36 @@ public class EditDialog<R extends TableRecord> extends JDialog
 			JLabel lbl = new JLabel(i.next());
 			this.getContentPane().add(lbl);
 			
-			final JTextField txtField = new JTextField();
-			if (i.previousIndex() < textValues.size())
+			final Object[] comboOptions = this.controller.comboOptions(i.previousIndex());
+			if (Objects.nonNull(comboOptions))
 			{
-				txtField.setText(textValues.get(i.previousIndex()).toString());
+				final JComboBox<Object> comboField = new JComboBox<>(comboOptions);
+				if (i.previousIndex() < textValues.size())
+				{
+					comboField.setSelectedItem(textValues.get(i.previousIndex()).toString());
+				}
+				this.components.add(comboField);
+				this.getContentPane().add(comboField);
 			}
-			this.textFields.add(txtField);
-			this.getContentPane().add(txtField);
-			txtField.setColumns(10);
+			else
+			{
+				final JTextField txtField = new JTextField();
+				if (i.previousIndex() < textValues.size())
+				{
+					txtField.setText(textValues.get(i.previousIndex()).toString());
+				}
+				this.components.add(txtField);
+				this.getContentPane().add(txtField);
+				txtField.setColumns(10);
+			}
 		}
-		this.setBounds(100, 100, 250, 38*(labelValues.size()+1));
+		this.setBounds(100, 100, 250, 35*(labelValues.size()+1));
 	}
 	
-	private class CancelActionEvent implements ActionListener
+	private class CloseActionEvent implements ActionListener
 	{
 		private final Dialog dialog;
-		public CancelActionEvent(final Dialog dialog)
+		public CloseActionEvent(final Dialog dialog)
 		{
 			this.dialog = dialog;
 		}
@@ -109,36 +127,43 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		}
 	}
 	
-	private class OkActionEvent<E> extends CancelActionEvent
+	private class OkActionEvent<E> extends CloseActionEvent
 	{
 		private final UIController<E> controller;
-		private final List<JTextField> textFields;
+		private final List<JComponent> componentFields;
 		private final UUID id;
 		
-		public OkActionEvent(final Dialog dialog, final UIController<E> controller,  final UUID id, final List<JTextField> textFields)
+		public OkActionEvent(final Dialog dialog, final UIController<E> controller,  final UUID id, final List<JComponent> textFields)
 		{
 			super(dialog);
 			this.controller = controller;
 			this.id = id;
-			this.textFields = textFields;
+			this.componentFields = textFields;
 		}
 		
 		@Override
 		public void actionPerformed(final ActionEvent e)
 		{
-			final String[] stringValues = new String[this.textFields.size()];
+			final Object[] values = new String[this.componentFields.size()];
 			int i = 0;
-			for (final JTextField textField : this.textFields)
+			for (final JComponent componentField : this.componentFields)
 			{
-				stringValues[i++] = textField.getText();
+				if (componentField instanceof JTextField)
+				{
+					values[i++] = ((JTextField)componentField).getText();
+				}
+				else if (componentField instanceof JComboBox)
+				{
+					values[i++] = ((JComboBox<?>)componentField).getSelectedItem();
+				}
 			}
 			if (Objects.isNull(this.id))
 			{
-				this.controller.createRecord(stringValues);
+				this.controller.createRecord(values);
 			}
 			else
 			{
-				this.controller.editRecord(this.id, stringValues);
+				this.controller.editRecord(this.id, values);
 			}
 			super.actionPerformed(e);
 		}

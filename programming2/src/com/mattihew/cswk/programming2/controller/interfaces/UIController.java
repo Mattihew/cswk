@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.model.RecordCache;
-import com.mattihew.cswk.programming2.model.students.Student;
 
 public interface UIController<E>
 {
-	default void createRecord (final String[] elementValues)
+	default void createRecord (final Object[] elementValues)
 	{
 		this.createRecord(elementValues, null);
 	}
 	
-	void createRecord (final String[] elementValues, final UUID id);
+	void createRecord (final Object[] elementValues, final UUID id);
 	
 	default void createRecord(final E element)
 	{
@@ -26,7 +25,7 @@ public interface UIController<E>
 	
 	void editRecord(final UUID id, final E element);
 	
-	void editRecord(final UUID id, final String[] elementValues);
+	void editRecord(final UUID id, final Object[] elementValues);
 	
 	void removeRecord(final UUID id);
 	
@@ -46,5 +45,5 @@ public interface UIController<E>
 	
 	List<String> getTableHeadings();
 
-	
+	Object[] comboOptions(final int attributeIndex);
 }

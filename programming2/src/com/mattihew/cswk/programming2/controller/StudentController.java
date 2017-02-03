@@ -49,13 +49,13 @@ public class StudentController extends TablePanelUIController<Student>
 	}
 
 	@Override
-	public void createRecord(final String[] elementValues, final UUID id)
+	public void createRecord(final Object[] elementValues, final UUID id)
 	{
 		this.createRecord(Student.fromTableColumnValues(elementValues), id);
 	}
 
 	@Override
-	public void editRecord(final UUID id, final String[] elementValues)
+	public void editRecord(final UUID id, final Object[] elementValues)
 	{
 		this.editRecord(id, Student.fromTableColumnValues(elementValues));
 	}

@@ -24,7 +24,7 @@ public class TeacherController extends TablePanelUIController<Teacher>
 	}
 	
 	@Override
-	public void createRecord(final String[] elementValues, final UUID id)
+	public void createRecord(final Object[] elementValues, final UUID id)
 	{
 		this.createRecord(Teacher.FromTableColumnValues(elementValues), id);
 	}
@@ -36,7 +36,7 @@ public class TeacherController extends TablePanelUIController<Teacher>
 	}
 
 	@Override
-	public void editRecord(final UUID id, final String[] elementValues)
+	public void editRecord(final UUID id, final Object[] elementValues)
 	{
 		this.editRecord(id, Teacher.FromTableColumnValues(elementValues));
 	}

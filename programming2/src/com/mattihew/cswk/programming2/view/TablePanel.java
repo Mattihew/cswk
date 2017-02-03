@@ -38,7 +38,7 @@ public class TablePanel extends Panel implements Observer
 	 * Create the frame.
 	 * @wbp.parser.constructor
 	 */
-	public TablePanel(final List<String> tableHeadings, final UIController<? extends TableRecord> controller)
+	public TablePanel(final Frame owner, final List<String> tableHeadings, final UIController<? extends TableRecord> controller)
 	{
 		super(new BorderLayout());
 		
@@ -59,7 +59,7 @@ public class TablePanel extends Panel implements Observer
 			public void actionPerformed(final ActionEvent e)
 			{
 				final UUID id = (UUID) TablePanel.this.tableModel.getValueAt(TablePanel.this.table.getSelectedRow(), 0);
-				controller.editExistingItem((Frame) TablePanel.this.getParent(), id);
+				controller.editExistingItem(owner, id);
 			}
 		});
 		

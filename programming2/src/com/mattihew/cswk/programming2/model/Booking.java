@@ -1,28 +1,35 @@
 package com.mattihew.cswk.programming2.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.students.Student;
+import com.mattihew.cswk.programming2.model.trips.Trip;
 
-public class Booking implements Comparable<Booking>
+public class Booking implements Comparable<Booking>, TableRecord
 {
 	private final Student student;
 	
+	private final Trip trip;
+	
 	private final boolean paid;
 	
-	private final boolean permisionRecieved;
+	private final Boolean permisionRecieved;
 	
-	public Booking(final Student student, final boolean hasPaid, final boolean hasPermission)
+	public Booking(final Student student, final Trip trip, final boolean hasPaid)
+	{
+		this(student, trip, hasPaid, null);
+	}
+	
+	public Booking(final Student student, final Trip trip, final boolean hasPaid, final Boolean hasPermission)
 	{
 		super();
 		this.student = student;
+		this.trip = trip;
 		this.paid = hasPaid;
 		this.permisionRecieved = hasPermission;
-	}
-	
-	public Booking(final Student student, final boolean hasPaid)
-	{
-		this(student, hasPaid, false);
 	}
 	
 	public Student getStudent()
@@ -30,12 +37,17 @@ public class Booking implements Comparable<Booking>
 		return this.student;
 	}
 	
+	public Trip getTrip()
+	{
+		return this.trip;
+	}
+	
 	public boolean hasPaid()
 	{
 		return this.paid;
 	}
 	
-	public boolean permisionRecieved()
+	public Boolean permisionRecieved()
 	{
 		return this.permisionRecieved;
 	}
@@ -86,6 +98,15 @@ public class Booking implements Comparable<Booking>
 		}
 		return result;
 	}
-	
 
+	@Override
+	public List<Object> toTableColumnValues()
+	{
+		final List<Object> result = new ArrayList<>();
+		result.add(this.student);
+		result.add(this.trip);
+		result.add(this.paid);
+		result.add(this.permisionRecieved);
+		return result;
+	}
 }

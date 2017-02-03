@@ -15,7 +15,7 @@ public abstract class TablePanelUIController<E extends TableRecord> implements U
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
-		return new TablePanel(this.getTableHeadings(), this);
+		return new TablePanel(owner, this.getTableHeadings(), this);
 	}
 	
 	@Override
@@ -26,15 +26,22 @@ public abstract class TablePanelUIController<E extends TableRecord> implements U
 	}
 	
 	@Override
-	public void editExistingItem(Frame owner, UUID id)
+	public void editExistingItem(final Frame owner, final UUID id)
 	{
 		final Dialog newDialog = new EditDialog<>(owner, this, this.getRecordCache().getRecord(id), id);
 		newDialog.setVisible(true);
 	}
 
 	@Override
-	public void removeExistingItem(Frame owner, UUID id)
+	public void removeExistingItem(final Frame owner, final UUID id)
 	{
 		this.removeRecord(id);
 	}
+
+	@Override
+	public String[] comboOptions(final int attributeIndex)
+	{
+		return null;
+	}
+	
 }
