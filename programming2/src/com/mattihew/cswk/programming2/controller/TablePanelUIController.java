@@ -38,7 +38,6 @@ public abstract class TablePanelUIController<E extends TableRecord> implements U
 		this.removeRecord(id);
 	}
 
-	@Override
 	public String[] comboOptions(final int attributeIndex)
 	{
 		return null;

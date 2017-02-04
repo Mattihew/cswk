@@ -43,7 +43,7 @@ public abstract class Person implements TableRecord
 	@Override
 	public String toString()
 	{
-		return String.join("\n", this.firstName, this.lastName);
+		return String.join(" ", this.firstName, this.lastName);
 	}
 	
 	/**

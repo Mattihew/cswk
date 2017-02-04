@@ -31,8 +31,9 @@ public class TablePanel extends Panel implements Observer
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
-	protected final JTable table;
-	protected final DefaultTableModel tableModel;
+	private final JTable table;
+	private final DefaultTableModel tableModel;
+	private final JPopupMenu popupMenu;
 	
 	/**
 	 * Create the frame.
@@ -49,28 +50,25 @@ public class TablePanel extends Panel implements Observer
 		this.add(this.table.getTableHeader(), BorderLayout.NORTH);
 		this.add(this.table, BorderLayout.CENTER);
 		
-		JPopupMenu popupMenu = new JPopupMenu();
-		this.addPopup(this.table, popupMenu);
+		this.popupMenu = new JPopupMenu();
+		this.addPopup(this.table, this.popupMenu);
 		
-		JMenuItem mntmEdit = new JMenuItem("Edit");
-		popupMenu.add(mntmEdit);
-		mntmEdit.addActionListener(new ActionListener() {
+		this.addPopupMenuItem("Edit", new ActionListener()
+		{
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				final UUID id = (UUID) TablePanel.this.tableModel.getValueAt(TablePanel.this.table.getSelectedRow(), 0);
+				final UUID id = TablePanel.this.getSelectedUUID();
 				controller.editExistingItem(owner, id);
 			}
 		});
 		
-		JMenuItem mntmRemove = new JMenuItem("Remove");
-		popupMenu.add(mntmRemove);
-		mntmRemove.addActionListener(new ActionListener() {
+		this.addPopupMenuItem("Remove", new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e)
 			{
-				final UUID id = (UUID) TablePanel.this.tableModel.getValueAt(TablePanel.this.table.getSelectedRow(), 0);
-				controller.removeExistingItem((Frame) TablePanel.this.getParent(), id);
+				final UUID id = TablePanel.this.getSelectedUUID();
+				controller.removeExistingItem(owner, id);
 			}
 		});
 		
@@ -80,6 +78,18 @@ public class TablePanel extends Panel implements Observer
 		}
 		
 		controller.getRecordCache().addObserver(this);
+	}
+	
+	public UUID getSelectedUUID()
+	{
+		return (UUID) TablePanel.this.tableModel.getValueAt(TablePanel.this.table.getSelectedRow(), 0);
+	}
+	
+	public void addPopupMenuItem(final String name, final ActionListener listener)
+	{
+		JMenuItem mntmItem = new JMenuItem(name);
+		mntmItem.addActionListener(listener);
+		this.popupMenu.add(mntmItem);
 	}
 	
 	private void addPopup(final JTable table, final JPopupMenu popup) {

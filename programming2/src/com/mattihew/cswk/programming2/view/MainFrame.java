@@ -25,9 +25,15 @@ public class MainFrame extends JFrame implements Observer
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
 	
+	private final JMenuBar menuBar;
+	
 	private JMenuItem mntmUndo;
 	
 	private JMenuItem mntmRedo;
+	
+	private JMenu mnInsert;
+	
+	private final JTabbedPane tabs;
 	
 	private int selectedTabIndex;
 	
@@ -41,13 +47,13 @@ public class MainFrame extends JFrame implements Observer
 		this.setBounds(100, 100, 450, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JMenuBar menuBar = new JMenuBar();
-		this.setJMenuBar(menuBar);
+		this.menuBar = new JMenuBar();
+		this.setJMenuBar(this.menuBar);
 		
 		if (Objects.nonNull(undoController))
 		{
 			JMenu mnEdit = new JMenu("Edit");
-			menuBar.add(mnEdit);
+			this.menuBar.add(mnEdit);
 			
 			this.mntmUndo = new JMenuItem("Undo");
 			this.mntmUndo.setEnabled(false);
@@ -72,15 +78,46 @@ public class MainFrame extends JFrame implements Observer
 			});
 		}
 		
+		
+		this.createInsertItems(controllers);
+		
+		
+		this.tabs = new JTabbedPane();
+		this.tabs.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent e)
+			{
+				mainController.tabChanged(MainFrame.this.tabs, MainFrame.this.selectedTabIndex);
+				MainFrame.this.selectedTabIndex = MainFrame.this.tabs.getSelectedIndex();
+			}
+		});
+		this.getContentPane().add(this.tabs, BorderLayout.CENTER);
+		this.createTabs(controllers);
+		undoController.addObserver(this);
+		mainController.addObserver(this);
+	}
+	
+	private void createTabs(final Collection<UIController<?>> controllers)
+	{
+		for (UIController<?> controller : controllers)
+		{
+			this.tabs.addTab(controller.getRecordNamePlural(), controller.getUIPanel(this));
+		}
+	}
+	
+	private void createInsertItems(final Collection<UIController<?>> controllers)
+	{
 		if (Objects.nonNull(controllers) && !controllers.isEmpty())
 		{
-			JMenu mnInsert = new JMenu("Insert");
-			menuBar.add(mnInsert);
-			
+			if (Objects.isNull(this.mnInsert))
+			{
+				this.mnInsert = new JMenu("Insert");
+				this.menuBar.add(this.mnInsert);
+			}
 			for (UIController<?> controller : controllers)
 			{
 				JMenuItem mntmNewItem = new JMenuItem("New " + controller.getRecordName());
-				mnInsert.add(mntmNewItem);
+				this.mnInsert.add(mntmNewItem);
 				mntmNewItem.addActionListener(new ActionListener()
 				{
 					@Override
@@ -91,31 +128,14 @@ public class MainFrame extends JFrame implements Observer
 				});
 			}
 		}
-		
-		final JTabbedPane tabs = new JTabbedPane();
-		tabs.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(final ChangeEvent e)
-			{
-				mainController.tabChanged(tabs, MainFrame.this.selectedTabIndex);
-				MainFrame.this.selectedTabIndex = tabs.getSelectedIndex();
-			}
-		});
-		this.getContentPane().add(tabs, BorderLayout.CENTER);
-		for (UIController<?> controller : controllers)
-		{
-			tabs.addTab(controller.getRecordNamePlural(), controller.getUIPanel(this));
-		}
-		undoController.addObserver(this);
-		this.setVisible(true);
 	}
 
 	@Override
-	public void update(final Observable o, final Object arg)
+	public void update(final Observable observable, final Object arg)
 	{
-		if (o instanceof UndoController)
+		if (observable instanceof UndoController)
 		{
-			final UndoController undoContoller = (UndoController) o;
+			final UndoController undoContoller = (UndoController) observable;
 			if (Objects.nonNull(this.mntmUndo))
 			{
 				this.mntmUndo.setEnabled(undoContoller.canUndo());
@@ -125,6 +145,15 @@ public class MainFrame extends JFrame implements Observer
 			{
 				this.mntmRedo.setEnabled(undoContoller.canRedo());
 				this.mntmRedo.setText("Redo " + undoContoller.nextRedoTitle());
+			}
+		}
+		else if (observable instanceof MainController)
+		{
+			if (arg instanceof Collection)
+			{
+				final Collection<UIController<?>> uiControllers = (Collection<UIController<?>>) arg;
+				this.createInsertItems(uiControllers);
+				this.createTabs(uiControllers);
 			}
 		}
 	}

@@ -44,6 +44,4 @@ public interface UIController<E>
 	RecordCache<E> getRecordCache();
 	
 	List<String> getTableHeadings();
-
-	Object[] comboOptions(final int attributeIndex);
 }

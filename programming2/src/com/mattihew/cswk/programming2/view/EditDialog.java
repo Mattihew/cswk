@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import com.mattihew.cswk.programming2.controller.TablePanelUIController;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 
@@ -29,20 +30,20 @@ public class EditDialog<R extends TableRecord> extends JDialog
 	/** serialVersionUID */
 	private static final long serialVersionUID = 3975565360523394130L;
 	private final List<JComponent> components = new ArrayList<>();
-	private final UIController<R> controller;
+	private final TablePanelUIController<R> controller;
 	
-	public EditDialog(final Frame owner, final UIController<R> controller)
+	public EditDialog(final Frame owner, final TablePanelUIController<R> controller)
 	{
 		this(owner, controller, null, null);
 	}
 	
-	public EditDialog(final Frame owner, final UIController<R> controller, final R record)
+	public EditDialog(final Frame owner, final TablePanelUIController<R> controller, final R record)
 	{
 		this(owner, controller, record, null);
 	}
 	
 	/** @wbp.parser.constructor */
-	public EditDialog(final Frame owner, final UIController<R> controller, final R record, final UUID id)
+	public EditDialog(final Frame owner, final TablePanelUIController<R> controller, final R record, final UUID id)
 	{
 		super(owner, true);
 		this.controller = Objects.requireNonNull(controller, "Controller Required");
