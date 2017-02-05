@@ -1,6 +1,8 @@
 package com.mattihew.cswk.programming2.controller;
 
 import java.awt.EventQueue;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -61,6 +63,13 @@ public class MainController extends Observable
 		this.uiControllers.add(new TripController(this.undoController, this, studentController.getRecordCache().getRecords().values()));
 		this.mainFrame = new MainFrame(this, this.undoController, this.uiControllers);
 		this.mainFrame.setVisible(true);
+		this.mainFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent e)
+			{
+				MainController.this.disposing();
+			}
+		});
 	}
 	
 	public void tabChanged(final JTabbedPane tabbedPane, final int oldTabIndex)
@@ -78,6 +87,14 @@ public class MainController extends Observable
 		{
 			this.setChanged();
 			this.notifyObservers(Collections.singleton(uiController));
+		}
+	}
+	
+	private void disposing()
+	{
+		for (UIController<?> controller : this.uiControllers)
+		{
+			controller.dispose();
 		}
 	}
 }

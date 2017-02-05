@@ -23,11 +23,11 @@ public class CreateRecordAction<R> implements UndoableAction
 		this(recordCache, recordName, newRecord, null);
 	}
 	
-	public CreateRecordAction(final RecordCache<R> recordCache, final String recordName, final R student, final UUID id)
+	public CreateRecordAction(final RecordCache<R> recordCache, final String recordName, final R record, final UUID id)
 	{
 		this.recordCache = Objects.requireNonNull(recordCache, "Record cache required to do creation into");
 		this.recordName = recordName;
-		this.newRecord = Objects.requireNonNull(student, "New Record to be created is required");
+		this.newRecord = Objects.requireNonNull(record, "New Record to be created is required");
 		this.id = id;
 	}
 	

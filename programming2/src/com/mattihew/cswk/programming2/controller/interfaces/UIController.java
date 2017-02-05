@@ -44,4 +44,6 @@ public interface UIController<E>
 	RecordCache<E> getRecordCache();
 	
 	List<String> getTableHeadings();
+	
+	default void dispose() {}
 }

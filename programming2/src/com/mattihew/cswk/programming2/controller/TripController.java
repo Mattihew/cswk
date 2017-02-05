@@ -9,9 +9,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
-import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
-import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
@@ -29,7 +26,7 @@ public class TripController extends TablePanelUIController<Trip>
 	
 	public TripController(final UndoController undoController, final MainController mainController, final Collection<Student> students)
 	{
-		super();
+		super(undoController);
 		this.undoController = undoController;
 		this.mainController = mainController;
 		this.students = students;
@@ -47,7 +44,7 @@ public class TripController extends TablePanelUIController<Trip>
 				final UUID id = tablePanel.getSelectedUUID();
 				final BookingController bookingController = new BookingController(
 						TripController.this.undoController,
-						TripController.this.tripCache.getRecord(id).getBookings(),
+						TripController.this.tripCache.getRecord(id),
 						TripController.this.students);
 				TripController.this.mainController.addUIController(bookingController);
 			}
@@ -63,28 +60,10 @@ public class TripController extends TablePanelUIController<Trip>
 	}
 
 	@Override
-	public void createRecord(final Trip element, final UUID id)
-	{
-		this.undoController.doCommand(new CreateRecordAction<>(this.tripCache, this.getRecordName(), element, id));
-	}
-
-	@Override
-	public void editRecord(final UUID id, final Trip element)
-	{
-		this.undoController.doCommand(new EditRecordAction<>(this.tripCache, this.getRecordName(), id, element));
-	}
-
-	@Override
 	public void editRecord(final UUID id, final Object[] elementValues)
 	{
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void removeRecord(final UUID id)
-	{
-		this.undoController.doCommand(new RemoveRecordAction<>(this.tripCache, this.getRecordName(), id));
 	}
 
 	@Override

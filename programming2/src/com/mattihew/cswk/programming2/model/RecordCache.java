@@ -1,7 +1,10 @@
 package com.mattihew.cswk.programming2.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Observable;
@@ -53,11 +56,31 @@ public class RecordCache<R> extends Observable
 		{
 			return null;
 		}
-		final UUID studentID = UUID.randomUUID();
-		this.records.put(studentID, record);
+		final UUID recordID = UUID.randomUUID();
+		this.records.put(recordID, record);
 		this.setChanged();
-		this.notifyObservers(Collections.singleton(studentID));
-		return studentID;
+		this.notifyObservers(Collections.singleton(recordID));
+		return recordID;
+	}
+	
+	public List<UUID> addRecords(final Collection<R> records)
+	{
+		final List<UUID> ids = new ArrayList<>(records.size());
+		for (final R record : records)
+		{
+			if (!this.records.containsValue(record))
+			{
+				final UUID recordID = UUID.randomUUID();
+				this.records.put(recordID, record);
+				ids.add(recordID);
+			}
+		}
+		if (!ids.isEmpty())
+		{
+			this.setChanged();
+			this.notifyObservers(ids);
+		}
+		return ids;
 	}
 	
 	public R putRecord(final UUID id, final R record)

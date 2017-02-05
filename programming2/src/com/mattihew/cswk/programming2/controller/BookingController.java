@@ -5,27 +5,24 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.controller.undo.CreateRecordAction;
-import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
-import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Booking;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.students.Student;
+import com.mattihew.cswk.programming2.model.trips.Trip;
 
 public class BookingController extends TablePanelUIController<Booking>
 {
 	private static final List<String> TABLE_HEADINGS = Arrays.asList("Student","Trip", "has paid", "has Permission");
-	
-	private final UndoController undoController;
+	private final String tripName;
 	private final RecordCache<Booking> bookings;
 	private final Collection<Student> students;
 	
-	public BookingController(final UndoController undoController, final RecordCache<Booking> bookings, final Collection<Student> students)
+	public BookingController(final UndoController undoController, final Trip trip, final Collection<Student> students)
 	{
-		super();
-		this.undoController = undoController;
-		this.bookings = bookings;
+		super(undoController);
+		this.tripName = trip.getDestination();
+		this.bookings = trip.getBookings();
 		this.students = students;
 	}
 	
@@ -37,18 +34,6 @@ public class BookingController extends TablePanelUIController<Booking>
 	}
 
 	@Override
-	public void createRecord(final Booking element, final UUID id)
-	{
-		this.undoController.doCommand(new CreateRecordAction<>(this.bookings, this.getRecordName(), element, id));
-	}
-
-	@Override
-	public void editRecord(final UUID id, final Booking element)
-	{
-		this.undoController.doCommand(new EditRecordAction<>(this.bookings, this.getRecordName(), id, element));
-	}
-
-	@Override
 	public void editRecord(final UUID id, final Object[] elementValues)
 	{
 		// TODO Auto-generated method stub
@@ -56,21 +41,15 @@ public class BookingController extends TablePanelUIController<Booking>
 	}
 
 	@Override
-	public void removeRecord(final UUID id)
-	{
-		this.undoController.doCommand(new RemoveRecordAction<>(this.bookings, this.getRecordName(), id));
-	}
-
-	@Override
 	public String getRecordName()
 	{
-		return "Booking";
+		return this.tripName + " Booking";
 	}
 
 	@Override
 	public String getRecordNamePlural()
 	{
-		return "Bookings";
+		return this.tripName + " Bookings";
 	}
 
 	@Override

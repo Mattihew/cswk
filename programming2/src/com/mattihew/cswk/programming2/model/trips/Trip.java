@@ -25,6 +25,11 @@ public class Trip implements TableRecord
 		this.tripProvider = tripProvider;
 	}
 	
+	public String getDestination()
+	{
+		return this.destination;
+	}
+	
 	/**
 	 * Add booking to trip.
 	 * 

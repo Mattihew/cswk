@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -45,7 +46,7 @@ public class MainFrame extends JFrame implements Observer
 	{
 		super("Trip Manager");
 		this.setBounds(100, 100, 450, 300);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		
 		this.menuBar = new JMenuBar();
 		this.setJMenuBar(this.menuBar);
@@ -157,4 +158,5 @@ public class MainFrame extends JFrame implements Observer
 			}
 		}
 	}
+	
 }

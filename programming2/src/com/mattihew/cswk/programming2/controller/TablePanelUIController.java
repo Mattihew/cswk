@@ -6,12 +6,18 @@ import java.awt.Panel;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
+import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.view.EditDialog;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
-public abstract class TablePanelUIController<E extends TableRecord> implements UIController<E>
+public abstract class TablePanelUIController<E extends TableRecord> extends RecordController<E> implements UIController<E>
 {
+	public TablePanelUIController(final UndoController undoController)
+	{
+		super(undoController);
+	}
+
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
