@@ -9,7 +9,7 @@ import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.storage.RecordStorage;
 import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.util.StringArrayUtils;
+import com.mattihew.cswk.programming2.util.ArrayUtils;
 
 public class StudentController extends TablePanelUIController<Student>
 {
@@ -86,9 +86,9 @@ public class StudentController extends TablePanelUIController<Student>
 		protected Student readRecord(final String readLine)
 		{
 			final String[] lineParts = readLine.split(",");
-			final String firstName = StringArrayUtils.getIndexOrDefault(lineParts, 0);
-			final String lastName = StringArrayUtils.getIndexOrDefault(lineParts, 1);
-			final String phoneNum = StringArrayUtils.getIndexOrDefault(lineParts, 2);
+			final String firstName = ArrayUtils.getOrDefault(lineParts, 0, "");
+			final String lastName = ArrayUtils.getOrDefault(lineParts, 1, "");
+			final String phoneNum = ArrayUtils.getOrDefault(lineParts, 2, "");
 			return new Student(firstName, lastName, phoneNum);
 		}
 	}
