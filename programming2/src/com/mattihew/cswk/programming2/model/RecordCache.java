@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ public class RecordCache<R> extends Observable
 	{
 		for(final Entry<UUID, R> entry : this.records.entrySet())
 		{
-			if (entry.getValue().equals(record))
+			if (Objects.equals(entry.getValue(), record))
 			{
 				return entry.getKey();
 			}
@@ -45,8 +46,11 @@ public class RecordCache<R> extends Observable
 	public R removeRecord(final UUID id)
 	{
 		final R result = this.records.remove(id);
-		this.setChanged();
-		this.notifyObservers(Collections.singleton(id));
+		if (Objects.nonNull(result))
+		{
+			this.setChanged();
+			this.notifyObservers(Collections.singleton(id));
+		}
 		return result;
 	}
 	
@@ -65,6 +69,10 @@ public class RecordCache<R> extends Observable
 	
 	public List<UUID> addRecords(final Collection<R> records)
 	{
+		if (records.isEmpty())
+		{
+			return Collections.emptyList();
+		}
 		final List<UUID> ids = new ArrayList<>(records.size());
 		for (final R record : records)
 		{
@@ -85,13 +93,35 @@ public class RecordCache<R> extends Observable
 	
 	public R putRecord(final UUID id, final R record)
 	{
-		final R result = this.records.put(id, record);
-		if (!record.equals(result))
+		final R oldRecord = this.records.put(id, record);
+		if (!record.equals(oldRecord))
 		{
 			this.setChanged();
 			this.notifyObservers(Collections.singleton(id));
 		}
-		return result;
+		return oldRecord;
+	}
+	
+	public Map<UUID, R> putRecords(final Map<UUID, R> idMap)
+	{
+		if (idMap.isEmpty())
+		{
+			return Collections.emptyMap();
+		}
+		final Map<UUID, R> oldRecords = new LinkedHashMap<>(idMap.size());
+		boolean changed = false;
+		for (final Entry<UUID, R> entry : idMap.entrySet())
+		{
+			final R oldRecord = this.records.put(entry.getKey(), entry.getValue());
+			oldRecords.put(entry.getKey(), oldRecord);
+			changed |= !Objects.equals(oldRecords, entry.getValue());
+		}
+		if (changed)
+		{
+			this.setChanged();
+			this.notifyObservers(oldRecords.keySet());
+		}
+		return oldRecords;
 	}
 	
 	public int size()

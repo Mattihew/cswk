@@ -5,11 +5,12 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract class RecordStorage<R>
 {
@@ -19,13 +20,15 @@ public abstract class RecordStorage<R>
 		this.filePath = filePath;
 	}
 	
-	public void writeRecords(final Collection<R> records)
+	public void writeRecords(final Map<UUID, R> records)
 	{
 		try (final BufferedWriter writer = new BufferedWriter(new FileWriter(this.filePath, false)))
 		{
-			for (final R record : records)
+			for (final Entry<UUID, R> record : records.entrySet())
 			{
-				this.writeRecord(writer, record);
+				writer.append(record.getKey().toString());
+				writer.append(',');
+				this.writeRecord(writer, record.getValue());
 				writer.newLine();
 			}
 		}
@@ -37,14 +40,15 @@ public abstract class RecordStorage<R>
 	
 	protected abstract void writeRecord(final Appendable output, final R record) throws IOException;
 	
-	public Collection<R> readRecords()
+	public Map<UUID, R> readRecords()
 	{
 		try (final BufferedReader reader = new BufferedReader(new FileReader(this.filePath)))
 		{
-			final List<R> records = new ArrayList<>();
+			final Map<UUID, R> records = new LinkedHashMap<>();
 			for (String readLine = reader.readLine(); Objects.nonNull(readLine); readLine = reader.readLine())
 			{
-				records.add(this.readRecord(readLine));
+				final String[] entry = readLine.split(",", 2);
+				records.put(UUID.fromString(entry[0]), this.readRecord(entry[1]));
 			}
 			return records;
 		}
@@ -52,7 +56,7 @@ public abstract class RecordStorage<R>
 		{
 			e.printStackTrace();
 		}
-		return Collections.emptyList();
+		return Collections.emptyMap();
 	}
 	
 	protected abstract R readRecord(final String readLine);

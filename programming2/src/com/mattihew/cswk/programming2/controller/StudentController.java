@@ -9,6 +9,7 @@ import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.storage.RecordStorage;
 import com.mattihew.cswk.programming2.model.students.Student;
+import com.mattihew.cswk.programming2.util.StringArrayUtils;
 
 public class StudentController extends TablePanelUIController<Student>
 {
@@ -19,7 +20,7 @@ public class StudentController extends TablePanelUIController<Student>
 	public StudentController(final UndoController undoController)
 	{
 		super(undoController);
-		this.studentCache.addRecords(this.studentStorage.readRecords());
+		this.studentCache.putRecords(this.studentStorage.readRecords());
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class StudentController extends TablePanelUIController<Student>
 	@Override
 	public void dispose()
 	{
-		this.studentStorage.writeRecords(this.studentCache.getRecords().values());
+		this.studentStorage.writeRecords(this.studentCache.getRecords());
 	}
 
 	private class StudentStorage extends RecordStorage<Student>
@@ -85,9 +86,9 @@ public class StudentController extends TablePanelUIController<Student>
 		protected Student readRecord(final String readLine)
 		{
 			final String[] lineParts = readLine.split(",");
-			final String firstName = lineParts.length > 0 ? lineParts[0] : "";
-			final String lastName = lineParts.length > 1 ? lineParts[1] : "";
-			final String phoneNum = lineParts.length > 2 ? lineParts[2] : "";
+			final String firstName = StringArrayUtils.getIndexOrDefault(lineParts, 0);
+			final String lastName = StringArrayUtils.getIndexOrDefault(lineParts, 1);
+			final String phoneNum = StringArrayUtils.getIndexOrDefault(lineParts, 2);
 			return new Student(firstName, lastName, phoneNum);
 		}
 	}
