@@ -8,8 +8,8 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Booking;
 import com.mattihew.cswk.programming2.model.RecordCache;
-import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.trips.Trip;
+import com.mattihew.cswk.programming2.model.Student;
+import com.mattihew.cswk.programming2.model.Trip;
 
 public class BookingController extends TablePanelUIController<Booking>
 {

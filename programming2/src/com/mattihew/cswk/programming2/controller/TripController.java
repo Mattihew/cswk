@@ -11,9 +11,9 @@ import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
-import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.teachers.Teacher;
-import com.mattihew.cswk.programming2.model.trips.Trip;
+import com.mattihew.cswk.programming2.model.Student;
+import com.mattihew.cswk.programming2.model.Teacher;
+import com.mattihew.cswk.programming2.model.Trip;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
 public class TripController extends TablePanelUIController<Trip>
@@ -30,7 +30,7 @@ public class TripController extends TablePanelUIController<Trip>
 		this.undoController = undoController;
 		this.mainController = mainController;
 		this.students = students;
-		this.tripCache.addRecord(new Trip("Home", new Teacher("bob", "smith")));
+		this.tripCache.addRecord(new Trip.TripBuilder().setTripProvider(new Teacher("Bob", "Smith")).setDestination("Somewhere").toTrip());
 	}
 	
 	@Override

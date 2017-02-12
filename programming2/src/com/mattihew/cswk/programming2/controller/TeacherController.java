@@ -7,8 +7,8 @@ import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.RecordCache;
-import com.mattihew.cswk.programming2.model.storage.RecordStorage;
-import com.mattihew.cswk.programming2.model.teachers.Teacher;
+import com.mattihew.cswk.programming2.model.Teacher;
+import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 
 public class TeacherController extends TablePanelUIController<Teacher>
@@ -83,8 +83,8 @@ public class TeacherController extends TablePanelUIController<Teacher>
 		protected Teacher readRecord(final String readLine)
 		{
 			final String[] lineParts = readLine.split(",");
-			final String firstName = ArrayUtils.getOrDefault(lineParts, 0, "");
-			final String lastName = ArrayUtils.getOrDefault(lineParts, 1, "");
+			final String firstName = ArrayUtils.getOrEmpty(lineParts, 0);
+			final String lastName = ArrayUtils.getOrEmpty(lineParts, 1);
 			return new Teacher(firstName, lastName);
 		}
 		

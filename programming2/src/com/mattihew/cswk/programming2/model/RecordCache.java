@@ -43,6 +43,28 @@ public class RecordCache<R> extends Observable
 		return Collections.unmodifiableMap(this.records);
 	}
 	
+	public Map<UUID, R> getRecords(final Collection<UUID> ids)
+	{
+		if (ids.isEmpty())
+		{
+			return Collections.emptyMap();
+		}
+		else if (ids.size() == 1)
+		{
+			final UUID id = ids.iterator().next();
+			return Collections.singletonMap(id, this.records.get(id));
+		}
+		final Map<UUID, R> results = new LinkedHashMap<>();
+		for (final Entry<UUID, R> recordEntry : this.records.entrySet())
+		{
+			if (ids.contains(recordEntry.getKey()))
+			{
+				results.put(recordEntry.getKey(), recordEntry.getValue());
+			}
+		}
+		return results;
+	}
+	
 	public R removeRecord(final UUID id)
 	{
 		final R result = this.records.remove(id);

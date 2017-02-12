@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
-import com.mattihew.cswk.programming2.model.students.Student;
-import com.mattihew.cswk.programming2.model.trips.Trip;
 
 public class Booking implements Comparable<Booking>, TableRecord
 {
@@ -14,21 +12,21 @@ public class Booking implements Comparable<Booking>, TableRecord
 	
 	private final Trip trip;
 	
-	private final boolean paid;
+	private final long amountPaid;
 	
 	private final Boolean permisionRecieved;
 	
-	public Booking(final Student student, final Trip trip, final boolean hasPaid)
+	public Booking(final Student student, final Trip trip, final long pennysPaid)
 	{
-		this(student, trip, hasPaid, null);
+		this(student, trip, pennysPaid, null);
 	}
 	
-	public Booking(final Student student, final Trip trip, final boolean hasPaid, final Boolean hasPermission)
+	public Booking(final Student student, final Trip trip, final long pennysPaid, final Boolean hasPermission)
 	{
 		super();
 		this.student = student;
 		this.trip = trip;
-		this.paid = hasPaid;
+		this.amountPaid = pennysPaid;
 		this.permisionRecieved = hasPermission;
 	}
 	
@@ -42,9 +40,9 @@ public class Booking implements Comparable<Booking>, TableRecord
 		return this.trip;
 	}
 	
-	public boolean hasPaid()
+	public long getAmountPaid()
 	{
-		return this.paid;
+		return this.amountPaid;
 	}
 	
 	public Boolean permisionRecieved()
@@ -71,7 +69,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(this.student, this.paid, this.permisionRecieved);
+		return Objects.hash(this.student, this.amountPaid, this.permisionRecieved);
 	}
 
 	/**
@@ -105,7 +103,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 		final List<Object> result = new ArrayList<>();
 		result.add(this.student);
 		result.add(this.trip);
-		result.add(this.paid);
+		result.add(this.amountPaid);
 		result.add(this.permisionRecieved);
 		return result;
 	}
