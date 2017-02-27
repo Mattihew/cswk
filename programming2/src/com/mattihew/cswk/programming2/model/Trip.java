@@ -1,9 +1,7 @@
 package com.mattihew.cswk.programming2.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
@@ -38,16 +36,29 @@ public class Trip implements TableRecord
 	{
 		return Collections.unmodifiableCollection(this.bookings);
 	}
+	
+	@Override
+	public Object getValueAt(final int columnIndex)
+	{
+		switch (columnIndex)
+		{
+			case 0:
+				return this.destination;
+			case 1:
+				return this.tripProvider;
+			case 2:
+				return this.accommodation;
+			default:
+				return null;
+		}
+	}
 
 	@Override
-	public List<Object> toTableColumnValues()
+	public int getColumnCount()
 	{
-		final List<Object> result = new ArrayList<>();
-		result.add(this.destination);
-		result.add(this.tripProvider);
-		return result;
+		return 3;
 	}
-	
+
 	public static class TripBuilder
 	{
 		private Collection<UUID> bookings = Collections.emptyList();

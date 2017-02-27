@@ -54,12 +54,12 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		if (Objects.isNull(record))
 		{
 			this.setTitle("New " + this.controller.getRecordName());
-			this.setValues(this.controller.getTableHeadings());
+			this.setValues(null);
 		}
 		else
 		{
 			this.setTitle("Edit " + this.controller.getRecordName());
-			this.setValues(this.controller.getTableHeadings(), record.toTableColumnValues());
+			this.setValues(null, null);
 		}
 		
 		JButton btnOk = new JButton("OK");

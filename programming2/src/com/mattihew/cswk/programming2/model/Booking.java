@@ -1,7 +1,5 @@
 package com.mattihew.cswk.programming2.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
@@ -98,13 +96,26 @@ public class Booking implements Comparable<Booking>, TableRecord
 	}
 
 	@Override
-	public List<Object> toTableColumnValues()
+	public Object getValueAt(final int columnIndex)
 	{
-		final List<Object> result = new ArrayList<>();
-		result.add(this.student);
-		result.add(this.trip);
-		result.add(this.amountPaid);
-		result.add(this.permisionRecieved);
-		return result;
+		switch (columnIndex)
+		{
+			case 0:
+				return this.student;
+			case 1:
+				return Long.valueOf(this.amountPaid);
+			case 2:
+				return this.permisionRecieved;
+			default:
+				return null;
+		}
 	}
+
+	@Override
+	public int getColumnCount()
+	{
+		return 3;
+	}
+
+
 }

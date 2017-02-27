@@ -5,11 +5,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import javax.swing.table.TableModel;
+
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Booking;
-import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.Trip;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 
 public class BookingController extends TablePanelUIController<Booking>
 {
@@ -22,7 +25,7 @@ public class BookingController extends TablePanelUIController<Booking>
 	{
 		super(undoController);
 		this.tripName = trip.getDestination();
-		this.bookings = trip.getBookings();
+		this.bookings = null;
 		this.students = students;
 	}
 	
@@ -57,11 +60,11 @@ public class BookingController extends TablePanelUIController<Booking>
 	{
 		return this.bookings;
 	}
-
+	
 	@Override
-	public List<String> getTableHeadings()
+	public TableModel getTableModel()
 	{
-		return BookingController.TABLE_HEADINGS;
+		return new RecordCacheTableModel(this.bookings, new String[]{}, new Class<?>[]{});
 	}
 
 	@Override

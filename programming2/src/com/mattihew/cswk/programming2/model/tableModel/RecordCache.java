@@ -1,4 +1,4 @@
-package com.mattihew.cswk.programming2.model;
+package com.mattihew.cswk.programming2.model.tableModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,16 +9,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Observable;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
 
 public class RecordCache<R> extends Observable
 {
-	private final Map<UUID, R> records;
+	private final SortedMap<UUID, R> records;
 	
 	public RecordCache()
 	{
 		super();
-		this.records = new LinkedHashMap<>();
+		this.records = new TreeMap<>();
 	}
 	
 	public R getRecord(final UUID id)
@@ -149,5 +152,10 @@ public class RecordCache<R> extends Observable
 	public int size()
 	{
 		return this.records.size();
+	}
+	
+	Set<Entry<UUID, R>> entrySet()
+	{
+		return this.records.entrySet();
 	}
 }

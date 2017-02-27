@@ -1,7 +1,5 @@
 package com.mattihew.cswk.programming2.model;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.abstracts.Person;
@@ -16,8 +14,6 @@ public class Student extends Person implements Comparable<Student>
 {
 	/** Phone number of this student.*/
 	private final String phone;
-	/** cached version of tableColumns used by {@link TablePanel}.*/
-	private List<Object> tableColumns;
 	
 	/**
 	 * Class Constructor.
@@ -123,16 +119,27 @@ public class Student extends Person implements Comparable<Student>
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @see com.mattihew.cswk.programming2.model.abstracts.Person#toTableColumnValues()
+	 * @see com.mattihew.cswk.programming2.model.abstracts.Person#getValueAt(int)
 	 */
 	@Override
-	public List<Object> toTableColumnValues()
+	public Object getValueAt(final int columnIndex)
 	{
-		if (Objects.isNull(this.tableColumns))
+		if (columnIndex == super.getColumnCount())
 		{
-			this.tableColumns = super.toTableColumnValues();
-			this.tableColumns.add(this.phone);
+			return this.phone;
 		}
-		return Collections.unmodifiableList(this.tableColumns);
+		return super.getValueAt(columnIndex);
 	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see com.mattihew.cswk.programming2.model.abstracts.Person#getColumnCount()
+	 */
+	@Override
+	public int getColumnCount()
+	{
+		return super.getColumnCount() + 1;
+	}
+	
 }

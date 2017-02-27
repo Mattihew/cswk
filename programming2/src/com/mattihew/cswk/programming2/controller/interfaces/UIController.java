@@ -2,10 +2,9 @@ package com.mattihew.cswk.programming2.controller.interfaces;
 
 import java.awt.Frame;
 import java.awt.Panel;
-import java.util.List;
 import java.util.UUID;
 
-import com.mattihew.cswk.programming2.model.RecordCache;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 
 public interface UIController<E>
 {
@@ -42,8 +41,6 @@ public interface UIController<E>
 	String getRecordNamePlural();
 	
 	RecordCache<E> getRecordCache();
-	
-	List<String> getTableHeadings();
 	
 	default void dispose() {}
 }

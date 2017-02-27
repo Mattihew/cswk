@@ -5,6 +5,8 @@ import java.awt.Frame;
 import java.awt.Panel;
 import java.util.UUID;
 
+import javax.swing.table.TableModel;
+
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
@@ -21,7 +23,7 @@ public abstract class TablePanelUIController<E extends TableRecord> extends Reco
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
-		return new TablePanel(owner, this.getTableHeadings(), this);
+		return new TablePanel(owner, this);
 	}
 	
 	@Override
@@ -43,10 +45,11 @@ public abstract class TablePanelUIController<E extends TableRecord> extends Reco
 	{
 		this.removeRecord(id);
 	}
+	
+	public abstract TableModel getTableModel();
 
 	public String[] comboOptions(final int attributeIndex)
 	{
 		return null;
 	}
-	
 }

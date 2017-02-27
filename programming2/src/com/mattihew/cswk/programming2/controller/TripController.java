@@ -4,16 +4,17 @@ import java.awt.Frame;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
+import javax.swing.table.TableModel;
+
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
-import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.Teacher;
 import com.mattihew.cswk.programming2.model.Trip;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
 public class TripController extends TablePanelUIController<Trip>
@@ -36,7 +37,7 @@ public class TripController extends TablePanelUIController<Trip>
 	@Override
 	public Panel getUIPanel(final Frame owner)
 	{
-		final TablePanel tablePanel = new TablePanel(owner, this.getTableHeadings(), this);
+		final TablePanel tablePanel = new TablePanel(owner, this);
 		tablePanel.addPopupMenuItem("Show Bookings", new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e)
@@ -83,11 +84,11 @@ public class TripController extends TablePanelUIController<Trip>
 	{
 		return this.tripCache;
 	}
-
+	
 	@Override
-	public List<String> getTableHeadings()
+	public TableModel getTableModel()
 	{
-		return Arrays.asList("Destination","Trip Provider");
+		return new RecordCacheTableModel(this.tripCache, new String[]{"Destination","Trip Provider","Accomodation"}, new Class<?>[]{String.class, String.class, String.class});
 	}
 
 	@Override

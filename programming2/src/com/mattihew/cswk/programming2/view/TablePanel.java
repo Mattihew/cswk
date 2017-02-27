@@ -7,46 +7,31 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.UUID;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
-import com.mattihew.cswk.programming2.controller.interfaces.UIController;
-import com.mattihew.cswk.programming2.model.RecordCache;
+import com.mattihew.cswk.programming2.controller.TablePanelUIController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
-import com.mattihew.cswk.programming2.view.util.UneditableDefaultTableModel;
 
-public class TablePanel extends Panel implements Observer
+public class TablePanel extends Panel
 {
 	/** serialVersionUID */
 	private static final long serialVersionUID = 5870316368738488041L;
 	private final JTable table;
-	private final DefaultTableModel tableModel;
 	private final JPopupMenu popupMenu;
 	
 	/**
 	 * Create the frame.
 	 * @wbp.parser.constructor
 	 */
-	public TablePanel(final Frame owner, final List<String> tableHeadings, final UIController<? extends TableRecord> controller)
+	public TablePanel(final Frame owner, final TablePanelUIController<? extends TableRecord> controller)
 	{
 		super(new BorderLayout());
 		
-		final List<String> headings = new LinkedList<String>(tableHeadings);
-		headings.add(0, "ID");
-		this.tableModel = new UneditableDefaultTableModel(headings.toArray(), 0);
-		this.table = new JTable(this.tableModel);
+		this.table = new JTable(controller.getTableModel());
 		this.add(this.table.getTableHeader(), BorderLayout.NORTH);
 		this.add(this.table, BorderLayout.CENTER);
 		
@@ -71,18 +56,11 @@ public class TablePanel extends Panel implements Observer
 				controller.removeExistingItem(owner, id);
 			}
 		});
-		
-		for (final Entry<UUID, ? extends TableRecord> entry : controller.getRecordCache().getRecords().entrySet())
-		{
-			this.addToTable(entry.getKey(), entry.getValue());
-		}
-		
-		controller.getRecordCache().addObserver(this);
 	}
 	
 	public UUID getSelectedUUID()
 	{
-		return (UUID) TablePanel.this.tableModel.getValueAt(TablePanel.this.table.getSelectedRow(), 0);
+		return (UUID) this.table.getValueAt(this.table.getSelectedRow(), 0);
 	}
 	
 	public void addPopupMenuItem(final String name, final ActionListener listener)
@@ -116,52 +94,5 @@ public class TablePanel extends Panel implements Observer
 				}
 			}
 		});
-	}
-	
-	private void addToTable(final UUID id, final TableRecord record)
-	{
-		final List<Object> data = new ArrayList<>();
-		data.add(0, id);
-		data.addAll(record.toTableColumnValues());
-		this.tableModel.addRow(data.toArray());
-	}
-	
-	private void replaceInTable(final UUID id, final TableRecord record)
-	{
-		for (int i = 0; i < this.tableModel.getRowCount(); i++)
-		{
-			if (this.tableModel.getValueAt(i, 0).equals(id))
-			{
-				if (Objects.isNull(record))
-				{
-					this.tableModel.removeRow(i);
-				}
-				else
-				{
-					final List<Object> columns = record.toTableColumnValues();
-					for (int j = 0; j < columns.size(); j++)
-					{
-						this.tableModel.setValueAt(columns.get(j),i, j+1);
-					}
-				}
-				return;
-			}
-		}
-		this.addToTable(id, record);
-	}
-	
-	@Override
-	public void update(final Observable o, final Object arg)
-	{
-		if (o instanceof RecordCache && arg instanceof Collection)
-		{
-			for (final Object id : (Collection<?>) arg)
-			{
-				if (id instanceof UUID)
-				{
-					this.replaceInTable((UUID) id, ((RecordCache<TableRecord>) o).getRecord((UUID) id));
-				}
-			}
-		}
 	}
 }

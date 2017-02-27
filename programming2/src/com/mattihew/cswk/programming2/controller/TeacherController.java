@@ -1,14 +1,15 @@
 package com.mattihew.cswk.programming2.controller;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 
+import javax.swing.table.TableModel;
+
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
-import com.mattihew.cswk.programming2.model.RecordCache;
 import com.mattihew.cswk.programming2.model.Teacher;
 import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 
 public class TeacherController extends TablePanelUIController<Teacher>
@@ -53,15 +54,15 @@ public class TeacherController extends TablePanelUIController<Teacher>
 	}
 
 	@Override
-	public List<String> getTableHeadings()
-	{
-		return Arrays.asList("First name", "Last name");
-	}
-
-	@Override
 	public void dispose()
 	{
 		this.teacherStorage.writeRecords(this.teacherCache.getRecords());
+	}
+	
+	@Override
+	public TableModel getTableModel()
+	{
+		return new RecordCacheTableModel(this.teacherCache, new String[]{"First Name", "Last Name"}, new Class<?>[]{String.class, String.class});
 	}
 	
 	private class TeacherStorage extends RecordStorage<Teacher>

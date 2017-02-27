@@ -1,11 +1,8 @@
 package com.mattihew.cswk.programming2.model.abstracts;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
-import com.mattihew.cswk.programming2.view.TablePanel;
 
 /**
  * This class represents a person within the system.
@@ -20,8 +17,6 @@ public abstract class Person implements TableRecord
 	private final String lastName;
 	/** the cached hash of this person.*/
 	private int lazyHash;
-	/** cached version of tableColumns used by {@link TablePanel}.*/
-	private List<Object> tableColumns;
 	
 	/**
 	 * Class Constructor.
@@ -136,20 +131,24 @@ public abstract class Person implements TableRecord
 		return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @see com.mattihew.cswk.programming2.model.interfaces.TableRecord#toTableColumnValues()
-	 */
 	@Override
-	public List<Object> toTableColumnValues()
+	public Object getValueAt(final int columnIndex)
 	{
-		if (Objects.isNull(this.tableColumns))
+		switch (columnIndex)
 		{
-			this.tableColumns = new ArrayList<>();
-			this.tableColumns.add(this.firstName);
-			this.tableColumns.add(this.lastName);
+			case 0:
+				return this.firstName;
+			case 1:
+				return this.lastName;
+			default:
+				return null;
 		}
-		return this.tableColumns;
 	}
+
+	@Override
+	public int getColumnCount()
+	{
+		return 2;
+	}
+	
 }
