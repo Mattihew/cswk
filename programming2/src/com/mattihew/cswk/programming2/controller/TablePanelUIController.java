@@ -5,11 +5,10 @@ import java.awt.Frame;
 import java.awt.Panel;
 import java.util.UUID;
 
-import javax.swing.table.TableModel;
-
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.view.EditDialog;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
@@ -46,7 +45,7 @@ public abstract class TablePanelUIController<E extends TableRecord> extends Reco
 		this.removeRecord(id);
 	}
 	
-	public abstract TableModel getTableModel();
+	public abstract RecordCacheTableModel getTableModel();
 
 	public String[] comboOptions(final int attributeIndex)
 	{

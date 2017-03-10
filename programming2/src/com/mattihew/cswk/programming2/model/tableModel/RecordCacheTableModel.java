@@ -83,7 +83,10 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 		return super.getColumnClass(columnIndex);
 	}
 
-
+	public <T extends TableRecord> Object getValueAt(final T entry, final int columnIndex)
+	{
+		return entry.getValueAt(columnIndex);
+	}
 
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex)

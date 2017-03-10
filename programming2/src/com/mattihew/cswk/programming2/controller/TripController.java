@@ -86,7 +86,7 @@ public class TripController extends TablePanelUIController<Trip>
 	}
 	
 	@Override
-	public TableModel getTableModel()
+	public RecordCacheTableModel getTableModel()
 	{
 		return new RecordCacheTableModel(this.tripCache, new String[]{"Destination","Trip Provider","Accomodation"}, new Class<?>[]{String.class, String.class, String.class});
 	}

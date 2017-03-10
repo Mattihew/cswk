@@ -7,9 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,6 +22,7 @@ import javax.swing.WindowConstants;
 import com.mattihew.cswk.programming2.controller.TablePanelUIController;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 
 public class EditDialog<R extends TableRecord> extends JDialog
 {
@@ -54,14 +53,12 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		if (Objects.isNull(record))
 		{
 			this.setTitle("New " + this.controller.getRecordName());
-			this.setValues(null);
 		}
 		else
 		{
 			this.setTitle("Edit " + this.controller.getRecordName());
-			this.setValues(null, null);
 		}
-		
+		this.setValues(record);
 		JButton btnOk = new JButton("OK");
 		this.getContentPane().add(btnOk);
 		this.getRootPane().setDefaultButton(btnOk);
@@ -72,46 +69,27 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		btnCancel.addActionListener(new CloseActionEvent(this));
 	}
 	
-	protected void setValues(final List<String> labelValues)
+	protected void setValues(final R record)
 	{
-		this.setValues(labelValues, Collections.emptyList());
-	}
-	
-	protected void setValues(final List<String> labelValues, final List<Object> textValues)
-	{
-		if (textValues.size() > labelValues.size())
+		final RecordCacheTableModel tableModel = this.controller.getTableModel();
+		final int columnCount = tableModel.getColumnCount() - 1;
+		
+		for (int i = 0; i < columnCount; i++)
 		{
-			throw new IndexOutOfBoundsException("number of input boxes exceeds number of labels");
-		}
-		for (final ListIterator<String> i = labelValues.listIterator(); i.hasNext();)
-		{
-			JLabel lbl = new JLabel(i.next());
+			JLabel lbl = new JLabel(tableModel.getColumnName(i + 1));
 			this.getContentPane().add(lbl);
 			
-			final Object[] comboOptions = this.controller.comboOptions(i.previousIndex());
-			if (Objects.nonNull(comboOptions))
+			final JTextField txtField = new JTextField();
+			if (Objects.nonNull(record))
 			{
-				final JComboBox<Object> comboField = new JComboBox<>(comboOptions);
-				if (i.previousIndex() < textValues.size())
-				{
-					comboField.setSelectedItem(textValues.get(i.previousIndex()).toString());
-				}
-				this.components.add(comboField);
-				this.getContentPane().add(comboField);
+				txtField.setText(Objects.toString(tableModel.getValueAt(record, i),""));
 			}
-			else
-			{
-				final JTextField txtField = new JTextField();
-				if (i.previousIndex() < textValues.size())
-				{
-					txtField.setText(textValues.get(i.previousIndex()).toString());
-				}
-				this.components.add(txtField);
-				this.getContentPane().add(txtField);
-				txtField.setColumns(10);
-			}
+			this.components.add(txtField);
+			this.getContentPane().add(txtField);
+			txtField.setColumns(10);
+			
 		}
-		this.setBounds(100, 100, 250, 35*(labelValues.size()+1));
+		this.setBounds(100, 100, 250, 35*(columnCount+1));
 	}
 	
 	private class CloseActionEvent implements ActionListener

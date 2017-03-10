@@ -61,7 +61,7 @@ public class StudentController extends TablePanelUIController<Student>
 	}
 	
 	@Override
-	public TableModel getTableModel()
+	public RecordCacheTableModel getTableModel()
 	{
 		return new RecordCacheTableModel(this.studentCache, new String[]{"First Name", "Last Name", "Phone"}, new Class<?>[]{String.class, String.class, String.class});
 	}

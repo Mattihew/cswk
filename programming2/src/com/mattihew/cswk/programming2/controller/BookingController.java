@@ -62,7 +62,7 @@ public class BookingController extends TablePanelUIController<Booking>
 	}
 	
 	@Override
-	public TableModel getTableModel()
+	public RecordCacheTableModel getTableModel()
 	{
 		return new RecordCacheTableModel(this.bookings, new String[]{}, new Class<?>[]{});
 	}
