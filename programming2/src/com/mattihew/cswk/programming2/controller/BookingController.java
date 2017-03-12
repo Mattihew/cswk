@@ -1,18 +1,18 @@
 package com.mattihew.cswk.programming2.controller;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import javax.swing.table.TableModel;
-
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Booking;
 import com.mattihew.cswk.programming2.model.Student;
-import com.mattihew.cswk.programming2.model.Trip;
+import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
+import com.mattihew.cswk.programming2.model.trip.StandardTrip;
 
 public class BookingController extends TablePanelUIController<Booking>
 {
@@ -20,13 +20,16 @@ public class BookingController extends TablePanelUIController<Booking>
 	private final String tripName;
 	private final RecordCache<Booking> bookings;
 	private final Collection<Student> students;
+	private final RecordStorage<Booking> bookingStorage;
 	
-	public BookingController(final UndoController undoController, final Trip trip, final Collection<Student> students)
+	public BookingController(final UndoController undoController, final StandardTrip trip, final Collection<Student> students)
 	{
 		super(undoController);
 		this.tripName = trip.getDestination();
-		this.bookings = null;
+		this.bookings = new RecordCache<>();
 		this.students = students;
+		this.bookingStorage = new BookingStorage(String.format("./data/%s_bookings.csv", this.tripName));
+		this.bookings.putRecords(this.bookingStorage.readRecords());
 	}
 	
 	@Override
@@ -64,7 +67,7 @@ public class BookingController extends TablePanelUIController<Booking>
 	@Override
 	public RecordCacheTableModel getTableModel()
 	{
-		return new RecordCacheTableModel(this.bookings, new String[]{}, new Class<?>[]{});
+		return new RecordCacheTableModel(this.bookings, new String[]{"Student", "amount paid", "permission recieved"}, new Class<?>[]{String.class, Integer.class, Boolean.class});
 	}
 
 	@Override
@@ -90,5 +93,41 @@ public class BookingController extends TablePanelUIController<Booking>
 			result[i++] = object.toString();
 		}
 		return result;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see com.mattihew.cswk.programming2.controller.interfaces.UIController#dispose()
+	 */
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		this.bookingStorage.writeRecords(this.bookings.getRecords());
+	}
+
+
+
+	private class BookingStorage extends RecordStorage<Booking>
+	{
+		public BookingStorage(final String filePath)
+		{
+			super(filePath);
+		}
+
+		@Override
+		protected void writeRecord(final Appendable output, final Booking record) throws IOException
+		{
+			
+		}
+
+		@Override
+		protected Booking readRecord(final String readLine)
+		{
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
 	}
 }

@@ -3,23 +3,24 @@ package com.mattihew.cswk.programming2.model;
 import java.util.Objects;
 
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
+import com.mattihew.cswk.programming2.model.trip.StandardTrip;
 
 public class Booking implements Comparable<Booking>, TableRecord
 {
 	private final Student student;
 	
-	private final Trip trip;
+	private final StandardTrip trip;
 	
 	private final long amountPaid;
 	
 	private final Boolean permisionRecieved;
 	
-	public Booking(final Student student, final Trip trip, final long pennysPaid)
+	public Booking(final Student student, final StandardTrip trip, final long pennysPaid)
 	{
 		this(student, trip, pennysPaid, null);
 	}
 	
-	public Booking(final Student student, final Trip trip, final long pennysPaid, final Boolean hasPermission)
+	public Booking(final Student student, final StandardTrip trip, final long pennysPaid, final Boolean hasPermission)
 	{
 		super();
 		this.student = student;
@@ -33,7 +34,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 		return this.student;
 	}
 	
-	public Trip getTrip()
+	public StandardTrip getTrip()
 	{
 		return this.trip;
 	}

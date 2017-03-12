@@ -10,18 +10,18 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.Teacher;
-import com.mattihew.cswk.programming2.model.Trip;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
+import com.mattihew.cswk.programming2.model.trip.StandardTrip;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
-public class TripController extends TablePanelUIController<Trip>
+public class TripController extends TablePanelUIController<StandardTrip>
 {
 	private final UndoController undoController;
 	private final MainController mainController;
 	
-	private final RecordCache<Trip> tripCache = new RecordCache<>();
+	private final RecordCache<StandardTrip> tripCache = new RecordCache<>();
 	private final Collection<Student> students;
 	private final Collection<Teacher> teachers;
 	
@@ -32,7 +32,7 @@ public class TripController extends TablePanelUIController<Trip>
 		this.mainController = mainController;
 		this.students = students;
 		this.teachers = teachers;
-		this.tripCache.addRecord(new Trip.TripBuilder().setTripProvider(new Teacher("Bob", "Smith")).setDestination("Somewhere").toTrip());
+		this.tripCache.addRecord(new StandardTrip.TripBuilder().setTripProvider(new Teacher("Bob", "Smith")).setDestination("Somewhere").toTrip());
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class TripController extends TablePanelUIController<Trip>
 	}
 
 	@Override
-	public RecordCache<Trip> getRecordCache()
+	public RecordCache<StandardTrip> getRecordCache()
 	{
 		return this.tripCache;
 	}

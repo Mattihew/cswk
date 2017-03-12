@@ -1,4 +1,4 @@
-package com.mattihew.cswk.programming2.model;
+package com.mattihew.cswk.programming2.model.trip;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 
-public class Trip implements TableRecord
+public class StandardTrip implements TableRecord
 {
 	final Collection<UUID> bookings;
 	
@@ -17,14 +17,16 @@ public class Trip implements TableRecord
 	
 	final String accommodation;
 	
+	final int cost;
 	
-	Trip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
+	StandardTrip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
 	{
 		super();
 		this.bookings = bookingIds;
 		this.destination = destination;
 		this.tripProvider = tripProvider;
 		this.accommodation = accommodation;
+		this.cost = 0;
 	}
 	
 	public String getDestination()
@@ -69,7 +71,7 @@ public class Trip implements TableRecord
 		
 		private String accommodation = null;
 		
-		public TripBuilder copyFrom(final Trip trip)
+		public TripBuilder copyFrom(final StandardTrip trip)
 		{
 			this.bookings = trip.bookings;
 			this.destination = trip.destination;
@@ -102,14 +104,14 @@ public class Trip implements TableRecord
 			return this;
 		}
 
-		public Trip toTrip()
+		public StandardTrip toTrip()
 		{
 			return this.build();
 		}
 		
-		public Trip build()
+		public StandardTrip build()
 		{
-			return new Trip(this.destination, this.tripProvider, this.bookings, this.accommodation);
+			return new StandardTrip(this.destination, this.tripProvider, this.bookings, this.accommodation);
 		}
 	}
 }
