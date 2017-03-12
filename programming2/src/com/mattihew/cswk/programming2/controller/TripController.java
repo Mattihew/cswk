@@ -7,14 +7,13 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.UUID;
 
-import javax.swing.table.TableModel;
-
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.Teacher;
 import com.mattihew.cswk.programming2.model.Trip;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
+import com.mattihew.cswk.programming2.util.ArrayUtils;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
 public class TripController extends TablePanelUIController<Trip>
@@ -24,13 +23,15 @@ public class TripController extends TablePanelUIController<Trip>
 	
 	private final RecordCache<Trip> tripCache = new RecordCache<>();
 	private final Collection<Student> students;
+	private final Collection<Teacher> teachers;
 	
-	public TripController(final UndoController undoController, final MainController mainController, final Collection<Student> students)
+	public TripController(final UndoController undoController, final MainController mainController, final Collection<Student> students, final Collection<Teacher> teachers)
 	{
 		super(undoController);
 		this.undoController = undoController;
 		this.mainController = mainController;
 		this.students = students;
+		this.teachers = teachers;
 		this.tripCache.addRecord(new Trip.TripBuilder().setTripProvider(new Teacher("Bob", "Smith")).setDestination("Somewhere").toTrip());
 	}
 	
@@ -56,7 +57,6 @@ public class TripController extends TablePanelUIController<Trip>
 	@Override
 	public void createRecord(final Object[] elementValues, final UUID id)
 	{
-		
 		
 	}
 
@@ -96,7 +96,7 @@ public class TripController extends TablePanelUIController<Trip>
 	{
 		if (attributeIndex == 1)
 		{
-			return new String[] {};
+			return ArrayUtils.toStringArray(this.teachers);
 		}
 		return null;
 	}

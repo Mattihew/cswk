@@ -58,9 +58,11 @@ public class MainController extends Observable
 			e.printStackTrace();
 		}
 		final StudentController studentController = new StudentController(this.undoController);
+		final TeacherController teacherController = new TeacherController(this.undoController);
 		this.uiControllers.add(studentController);
 		this.uiControllers.add(new TeacherController(this.undoController));
-		this.uiControllers.add(new TripController(this.undoController, this, studentController.getRecordCache().getRecords().values()));
+		
+		this.uiControllers.add(new TripController(this.undoController, this, studentController.getRecordCache().getRecords().values(),teacherController.getRecordCache().getRecords().values()));
 		this.mainFrame = new MainFrame(this, this.undoController, this.uiControllers);
 		this.mainFrame.setVisible(true);
 		this.mainFrame.addWindowListener(new WindowAdapter() {

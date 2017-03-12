@@ -9,16 +9,16 @@ import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 
 public class Trip implements TableRecord
 {
-	private final Collection<UUID> bookings;
+	final Collection<UUID> bookings;
 	
-	private final String destination;
+	final String destination;
 	
-	private final TripProvider tripProvider;
+	final TripProvider tripProvider;
 	
-	private final String accommodation;
+	final String accommodation;
 	
 	
-	private Trip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
+	Trip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
 	{
 		super();
 		this.bookings = bookingIds;
@@ -68,8 +68,6 @@ public class Trip implements TableRecord
 		private TripProvider tripProvider = null;
 		
 		private String accommodation = null;
-		
-		public TripBuilder() {}
 		
 		public TripBuilder copyFrom(final Trip trip)
 		{

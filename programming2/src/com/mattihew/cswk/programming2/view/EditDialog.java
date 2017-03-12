@@ -79,14 +79,25 @@ public class EditDialog<R extends TableRecord> extends JDialog
 			JLabel lbl = new JLabel(tableModel.getColumnName(i + 1));
 			this.getContentPane().add(lbl);
 			
-			final JTextField txtField = new JTextField();
-			if (Objects.nonNull(record))
+			final JComponent comp;
+			final String[] options = this.controller.comboOptions(i);
+			if (Objects.nonNull(options))
 			{
-				txtField.setText(Objects.toString(tableModel.getValueAt(record, i),""));
+				comp = new JComboBox<>(options);
 			}
-			this.components.add(txtField);
-			this.getContentPane().add(txtField);
-			txtField.setColumns(10);
+			else
+			{
+				final JTextField txtField = new JTextField();
+				if (Objects.nonNull(record))
+				{
+					txtField.setText(Objects.toString(tableModel.getValueAt(record, i),""));
+				}
+				txtField.setColumns(10);
+				comp = txtField;
+			}
+			this.components.add(comp);
+			this.getContentPane().add(comp);
+			
 			
 		}
 		this.setBounds(100, 100, 250, 35*(columnCount+1));

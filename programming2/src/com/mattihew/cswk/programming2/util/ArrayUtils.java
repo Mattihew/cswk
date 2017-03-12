@@ -1,5 +1,7 @@
 package com.mattihew.cswk.programming2.util;
 
+import java.util.Collection;
+
 public class ArrayUtils
 {
 	/**
@@ -32,5 +34,16 @@ public class ArrayUtils
 	public static String getOrEmpty(final String[] array, final int index)
 	{
 		return ArrayUtils.getOrDefault(array, index, "");
+	}
+	
+	public static String[] toStringArray (final Collection<?> collection)
+	{
+		final String[] result = new String[collection.size()];
+		int i = 0;
+		for (final Object object : collection)
+		{
+			result[i++] = object.toString();
+		}
+		return result;
 	}
 }
