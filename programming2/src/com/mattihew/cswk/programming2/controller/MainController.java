@@ -16,6 +16,11 @@ import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.view.MainFrame;
 
+/**
+ * The main controller for this application.
+ * 
+ * @author Matt Rayner
+ */
 public class MainController extends Observable
 {
 	private final UndoController undoController;
@@ -47,7 +52,10 @@ public class MainController extends Observable
 		});
 	}
 	
-	private void createUI()
+	/**
+	 * Creates and populates the UI with any initial data.
+	 */
+	private final void createUI()
 	{
 		try
 		{
@@ -74,6 +82,12 @@ public class MainController extends Observable
 		});
 	}
 	
+	/**
+	 * Triggered when the tabs have been changed on the ui.
+	 * 
+	 * @param tabbedPane the tabbed pane that has changed.
+	 * @param oldTabIndex the previous tab index.
+	 */
 	public void tabChanged(final JTabbedPane tabbedPane, final int oldTabIndex)
 	{
 		if (this.undoController.canDo() && tabbedPane.getSelectedIndex() != oldTabIndex)
@@ -83,6 +97,11 @@ public class MainController extends Observable
 		}
 	}
 	
+	/**
+	 * Adds a new {@link UIController} to this controller.
+	 * 
+	 * @param uiController the UIController to add.
+	 */
 	public void addUIController(final UIController<?> uiController)
 	{
 		if (this.uiControllers.add(uiController))
@@ -92,6 +111,9 @@ public class MainController extends Observable
 		}
 	}
 	
+	/**
+	 * disposes each controller.
+	 */
 	private void disposing()
 	{
 		for (UIController<?> controller : this.uiControllers)

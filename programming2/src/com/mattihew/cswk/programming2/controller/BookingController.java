@@ -13,7 +13,13 @@ import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.model.trip.StandardTrip;
+import com.mattihew.cswk.programming2.util.ArrayUtils;
 
+/**
+ * Controller for the Bookings of a Trip.
+ * 
+ * @author Matt Rayner
+ */
 public class BookingController extends TablePanelUIController<Booking>
 {
 	private static final List<String> TABLE_HEADINGS = Arrays.asList("Student","Trip", "has paid", "has Permission");
@@ -22,6 +28,13 @@ public class BookingController extends TablePanelUIController<Booking>
 	private final Collection<Student> students;
 	private final RecordStorage<Booking> bookingStorage;
 	
+	/**
+	 * Class Constructor
+	 *
+	 * @param undoController the undocontroller to use for doing actions.
+	 * @param trip the trip to get the bookings for.
+	 * @param students the students to look values from.
+	 */
 	public BookingController(final UndoController undoController, final StandardTrip trip, final Collection<Student> students)
 	{
 		super(undoController);
@@ -76,23 +89,12 @@ public class BookingController extends TablePanelUIController<Booking>
 		switch (BookingController.TABLE_HEADINGS.get(attributeIndex))
 		{
 			case "Student":
-				return BookingController.toStringArray(this.students);
+				return ArrayUtils.toStringArray(this.students);
 			case "Trip":
 				return null;
 			default:
 				return new String[] {Boolean.toString(true), Boolean.toString(false)};
 		}
-	}
-	
-	private static String[] toStringArray(final Collection<? extends Object> objects)
-	{
-		final String[] result = new String[objects.size()];
-		int i = 0;
-		for (final Object object : objects)
-		{
-			result[i++] = object.toString();
-		}
-		return result;
 	}
 	
 	/**

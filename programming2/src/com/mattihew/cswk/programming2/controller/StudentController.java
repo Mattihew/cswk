@@ -3,8 +3,6 @@ package com.mattihew.cswk.programming2.controller;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.swing.table.TableModel;
-
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
@@ -18,6 +16,11 @@ public class StudentController extends TablePanelUIController<Student>
 	
 	private final RecordStorage<Student> studentStorage = new StudentStorage("./data/students.csv");
 	
+	/**
+	 * Class Constructor
+	 *
+	 * @param undoController the undo controller to use for doing actions.
+	 */
 	public StudentController(final UndoController undoController)
 	{
 		super(undoController);

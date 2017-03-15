@@ -8,9 +8,22 @@ import com.mattihew.cswk.programming2.controller.undo.EditRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.RemoveRecordAction;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 
+/**
+ * Controller for Records. Defines default behaviour for creating,
+ *  editing and removing records in a undoable way.
+ * 
+ * @author Matt Rayner
+ * 
+ * @param <R> the Record's class
+ */
 public abstract class RecordController<R> implements UIController<R>
 {
 	private final UndoController undoController;
+	/**
+	 * Class Constructor
+	 *
+	 * @param undoController the undo controller to store the action history.
+	 */
 	public RecordController(final UndoController undoController)
 	{
 		super();
