@@ -10,6 +10,11 @@ import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 
+/**
+ * Controller for Students.
+ * 
+ * @author Matt Rayner
+ */
 public class StudentController extends TablePanelUIController<Student>
 {
 	private final RecordCache<Student> studentCache = new RecordCache<>();
@@ -69,8 +74,18 @@ public class StudentController extends TablePanelUIController<Student>
 		return new RecordCacheTableModel(this.studentCache, new String[]{"First Name", "Last Name", "Phone"}, new Class<?>[]{String.class, String.class, String.class});
 	}
 
+	/**
+	 * Permanent Storage class.
+	 * 
+	 * @author Matt Rayner
+	 */
 	private class StudentStorage extends RecordStorage<Student>
 	{
+		/**
+		 * Class Constructor.
+		 *
+		 * @param filePath
+		 */
 		public StudentStorage(final String filePath)
 		{
 			super(filePath);

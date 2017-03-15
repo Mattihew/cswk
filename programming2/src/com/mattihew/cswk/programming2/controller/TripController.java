@@ -16,6 +16,11 @@ import com.mattihew.cswk.programming2.model.trip.StandardTrip;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 import com.mattihew.cswk.programming2.view.TablePanel;
 
+/**
+ * Controller
+ * 
+ * @author Matt Rayner
+ */
 public class TripController extends TablePanelUIController<StandardTrip>
 {
 	private final UndoController undoController;
@@ -25,6 +30,14 @@ public class TripController extends TablePanelUIController<StandardTrip>
 	private final Collection<Student> students;
 	private final Collection<Teacher> teachers;
 	
+	/**
+	 * Class Constructor.
+	 *
+	 * @param undoController the undo controller to use for the actions
+	 * @param mainController a reference to the mainController.
+	 * @param students a collection of students that can be added to trips
+	 * @param teachers a collection of teachers that can be added to trips
+	 */
 	public TripController(final UndoController undoController, final MainController mainController, final Collection<Student> students, final Collection<Teacher> teachers)
 	{
 		super(undoController);

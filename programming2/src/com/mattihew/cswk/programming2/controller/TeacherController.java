@@ -3,8 +3,6 @@ package com.mattihew.cswk.programming2.controller;
 import java.io.IOException;
 import java.util.UUID;
 
-import javax.swing.table.TableModel;
-
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Teacher;
 import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
@@ -12,6 +10,11 @@ import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 
+/**
+ * Controller class for teachers.
+ * 
+ * @author Matt Rayner
+ */
 public class TeacherController extends TablePanelUIController<Teacher>
 {
 
@@ -65,6 +68,11 @@ public class TeacherController extends TablePanelUIController<Teacher>
 		return new RecordCacheTableModel(this.teacherCache, new String[]{"First Name", "Last Name"}, new Class<?>[]{String.class, String.class});
 	}
 	
+	/**
+	 * Permanent Storage class for Teachers.
+	 * 
+	 * @author Matt Rayner
+	 */
 	private class TeacherStorage extends RecordStorage<Teacher>
 	{
 		public TeacherStorage(final String filePath)
