@@ -7,17 +7,17 @@ import java.util.UUID;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 
-public class StandardTrip implements TableRecord
+public class StandardTrip implements Trip, TableRecord
 {
-	final Collection<UUID> bookings;
+	private final Collection<UUID> bookings;
 	
-	final String destination;
+	private final String destination;
 	
-	final TripProvider tripProvider;
+	private final TripProvider tripProvider;
 	
-	final String accommodation;
+	private final String accommodation;
 	
-	final int cost;
+	private final int cost;
 	
 	StandardTrip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
 	{
@@ -29,14 +29,22 @@ public class StandardTrip implements TableRecord
 		this.cost = 0;
 	}
 	
+	@Override
 	public String getDestination()
 	{
 		return this.destination;
 	}
 	
+	@Override
 	public Collection<UUID> getBookingIds()
 	{
 		return Collections.unmodifiableCollection(this.bookings);
+	}
+	
+	@Override
+	public int getCost()
+	{
+		return this.cost;
 	}
 	
 	@Override
