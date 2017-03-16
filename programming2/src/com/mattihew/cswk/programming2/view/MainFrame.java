@@ -1,8 +1,6 @@
 package com.mattihew.cswk.programming2.view;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Observable;
@@ -28,18 +26,20 @@ public class MainFrame extends JFrame implements Observer
 	
 	private final JMenuBar menuBar;
 	
+	private final JTabbedPane tabs;
+	
 	private JMenuItem mntmUndo;
 	
 	private JMenuItem mntmRedo;
 	
 	private JMenu mnInsert;
-	
-	private final JTabbedPane tabs;
-	
-	private int selectedTabIndex;
-	
+
 	/**
-	 * Create the frame.
+	 * Class Constructor.
+	 *
+	 * @param mainController the main controller for the whole Application
+	 * @param undoController the undo controller to control with this UI
+	 * @param controllers the UIControllers to populate the UI with
 	 * @wbp.parser.constructor
 	 */
 	public MainFrame(final MainController mainController, final UndoController undoController, final Collection<UIController<?>> controllers)
@@ -59,37 +59,25 @@ public class MainFrame extends JFrame implements Observer
 			this.mntmUndo = new JMenuItem("Undo");
 			this.mntmUndo.setEnabled(false);
 			mnEdit.add(this.mntmUndo);
-			this.mntmUndo.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e)
-				{
-					undoController.undoCommand();
-				}
-			});
+			this.mntmUndo.addActionListener((e) -> undoController.undoCommand());
 			
 			this.mntmRedo = new JMenuItem("Redo");
 			this.mntmRedo.setEnabled(false);
 			mnEdit.add(this.mntmRedo);
-			this.mntmRedo.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent e)
-				{
-					undoController.redoCommand();
-				}
-			});
+			this.mntmRedo.addActionListener((e) -> undoController.redoCommand());
 		}
-		
 		
 		this.createInsertItems(controllers);
 		
-		
 		this.tabs = new JTabbedPane();
 		this.tabs.addChangeListener(new ChangeListener() {
+			private int selectedTabIndex;
 			@Override
 			public void stateChanged(final ChangeEvent e)
 			{
-				mainController.tabChanged(MainFrame.this.tabs, MainFrame.this.selectedTabIndex);
-				MainFrame.this.selectedTabIndex = MainFrame.this.tabs.getSelectedIndex();
+				JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+				mainController.tabChanged(tabbedPane, this.selectedTabIndex);
+				this.selectedTabIndex = tabbedPane.getSelectedIndex();
 			}
 		});
 		this.getContentPane().add(this.tabs, BorderLayout.CENTER);
@@ -98,6 +86,11 @@ public class MainFrame extends JFrame implements Observer
 		mainController.addObserver(this);
 	}
 	
+	/**
+	 * Adds UI Panels to tabs.
+	 * 
+	 * @param controllers the controllers to get Panels from.
+	 */
 	private void createTabs(final Collection<UIController<?>> controllers)
 	{
 		for (UIController<?> controller : controllers)
@@ -106,6 +99,11 @@ public class MainFrame extends JFrame implements Observer
 		}
 	}
 	
+	/**
+	 * adds menu item to insert menu for inserting new items
+	 * 
+	 * @param controllers the controllers of the Records that can be inserted
+	 */
 	private void createInsertItems(final Collection<UIController<?>> controllers)
 	{
 		if (Objects.nonNull(controllers) && !controllers.isEmpty())
@@ -119,18 +117,16 @@ public class MainFrame extends JFrame implements Observer
 			{
 				JMenuItem mntmNewItem = new JMenuItem("New " + controller.getRecordName());
 				this.mnInsert.add(mntmNewItem);
-				mntmNewItem.addActionListener(new ActionListener()
-				{
-					@Override
-					public void actionPerformed(final ActionEvent e)
-					{
-						controller.insertNewItem(MainFrame.this);
-					}
-				});
+				mntmNewItem.addActionListener((e) -> controller.insertNewItem(MainFrame.this));
 			}
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(final Observable observable, final Object arg)
 	{
@@ -152,6 +148,7 @@ public class MainFrame extends JFrame implements Observer
 		{
 			if (arg instanceof Collection)
 			{
+				@SuppressWarnings("unchecked") // if arg is a Collection it will always be a collection of UIControllers
 				final Collection<UIController<?>> uiControllers = (Collection<UIController<?>>) arg;
 				this.createInsertItems(uiControllers);
 				this.createTabs(uiControllers);

@@ -42,14 +42,7 @@ public class MainController extends Observable
 	private MainController()
 	{
 		this.undoController = new UndoController();
-		EventQueue.invokeLater(new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				MainController.this.createUI();
-			}
-		});
+		EventQueue.invokeLater(() -> MainController.this.createUI());
 	}
 	
 	/**

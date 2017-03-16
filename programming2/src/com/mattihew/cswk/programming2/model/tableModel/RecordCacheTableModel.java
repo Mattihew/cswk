@@ -19,6 +19,13 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 	private final List<String> columnNames;
 	private final Class<?>[] classes;
 	
+	/**
+	 * Class Constructor.
+	 *
+	 * @param cache the RecordCache to read data from
+	 * @param columnNames the column names
+	 * @param columnTypes the column types to use for the table model.
+	 */
 	public RecordCacheTableModel(final RecordCache<? extends TableRecord> cache, final String[] columnNames, final Class<?>[] columnTypes)
 	{
 		this.recordCache = cache;
@@ -27,18 +34,33 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 		this.recordCache.addObserver(this);
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.TableModel#getRowCount()
+	 */
 	@Override
 	public int getRowCount()
 	{
 		return this.recordCache.size();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
 	@Override
 	public int getColumnCount()
 	{
 		return this.columnNames.size() + 1;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.AbstractTableModel#getColumnName(int)
+	 */
 	@Override
 	public String getColumnName(final int column)
 	{
@@ -53,6 +75,11 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 		return super.getColumnName(column);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.AbstractTableModel#findColumn(java.lang.String)
+	 */
 	@Override
 	public int findColumn(final String columnName)
 	{
@@ -69,6 +96,11 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 
 
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
+	 */
 	@Override
 	public Class<?> getColumnClass(final int columnIndex)
 	{
@@ -83,11 +115,11 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 		return super.getColumnClass(columnIndex);
 	}
 
-	public <T extends TableRecord> Object getValueAt(final T entry, final int columnIndex)
-	{
-		return entry.getValueAt(columnIndex);
-	}
-
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see javax.swing.table.TableModel#getValueAt(int, int)
+	 */
 	@Override
 	public Object getValueAt(final int rowIndex, final int columnIndex)
 	{
@@ -109,6 +141,11 @@ public class RecordCacheTableModel extends AbstractTableModel implements Observe
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(final Observable o, final Object arg)
 	{

@@ -3,7 +3,6 @@ package com.mattihew.cswk.programming2.view;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.Panel;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,7 +13,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 
 import com.mattihew.cswk.programming2.controller.TablePanelUIController;
-import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 
 public class TablePanel extends Panel
 {
@@ -24,10 +22,13 @@ public class TablePanel extends Panel
 	private final JPopupMenu popupMenu;
 	
 	/**
-	 * Create the frame.
+	 * Class Constructor.
+	 *
+	 * @param owner this panel's owner
+	 * @param controller the controller to get Data from
 	 * @wbp.parser.constructor
 	 */
-	public TablePanel(final Frame owner, final TablePanelUIController<? extends TableRecord> controller)
+	public TablePanel(final Frame owner, final TablePanelUIController<?> controller)
 	{
 		super(new BorderLayout());
 		
@@ -38,31 +39,26 @@ public class TablePanel extends Panel
 		this.popupMenu = new JPopupMenu();
 		this.addPopup(this.table, this.popupMenu);
 		
-		this.addPopupMenuItem("Edit", new ActionListener()
-		{
-			@Override
-			public void actionPerformed(final ActionEvent e)
-			{
-				final UUID id = TablePanel.this.getSelectedUUID();
-				controller.editExistingItem(owner, id);
-			}
-		});
-		
-		this.addPopupMenuItem("Remove", new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e)
-			{
-				final UUID id = TablePanel.this.getSelectedUUID();
-				controller.removeExistingItem(owner, id);
-			}
-		});
+		this.addPopupMenuItem("Edit", (e) -> controller.editExistingItem(owner, TablePanel.this.getSelectedUUID()));
+		this.addPopupMenuItem("Remove", (e) -> controller.removeExistingItem(owner, TablePanel.this.getSelectedUUID()));
 	}
 	
+	/**
+	 * Gets the UUID of the selected item in the table.
+	 * 
+	 * @return a UUID.
+	 */
 	public UUID getSelectedUUID()
 	{
 		return (UUID) this.table.getValueAt(this.table.getSelectedRow(), 0);
 	}
 	
+	/**
+	 * Adds a new popup menu item to the popup menu.
+	 * 
+	 * @param name the name to display in the popup menu
+	 * @param listener the action to perform when menu item clicked
+	 */
 	public void addPopupMenuItem(final String name, final ActionListener listener)
 	{
 		JMenuItem mntmItem = new JMenuItem(name);
@@ -70,7 +66,14 @@ public class TablePanel extends Panel
 		this.popupMenu.add(mntmItem);
 	}
 	
-	private void addPopup(final JTable table, final JPopupMenu popup) {
+	/**
+	 * attaches a popup menu to a table.
+	 * 
+	 * @param table the table to attach the popup to
+	 * @param popup the popup to attach
+	 */
+	private void addPopup(final JTable table, final JPopupMenu popup)
+	{
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(final MouseEvent e) {

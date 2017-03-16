@@ -31,17 +31,38 @@ public class EditDialog<R extends TableRecord> extends JDialog
 	private final List<JComponent> components = new ArrayList<>();
 	private final TablePanelUIController<R> controller;
 	
+	/**
+	 * Class Constructor.
+	 *
+	 * @param owner the frame that this dialog is a child of.
+	 * @param controller the controller this UI interacts with.
+	 */
 	public EditDialog(final Frame owner, final TablePanelUIController<R> controller)
 	{
 		this(owner, controller, null, null);
 	}
 	
+	/**
+	 * Class Constructor.
+	 *
+	 * @param owner the frame that this dialog is a child of.
+	 * @param controller the controller this UI interacts with.
+	 * @param record the record to populate the inputs with.
+	 */
 	public EditDialog(final Frame owner, final TablePanelUIController<R> controller, final R record)
 	{
 		this(owner, controller, record, null);
 	}
 	
-	/** @wbp.parser.constructor */
+	/**
+	 * Class Constructor.
+	 *
+	 * @param owner the frame that this dialog is a child of.
+	 * @param controller the controller this UI interacts with.
+	 * @param record the record to populate the inputs with.
+	 * @param id the id of the record being edited.
+	 * @wbp.parser.constructor
+	 */
 	public EditDialog(final Frame owner, final TablePanelUIController<R> controller, final R record, final UUID id)
 	{
 		super(owner, true);
@@ -62,14 +83,19 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		JButton btnOk = new JButton("OK");
 		this.getContentPane().add(btnOk);
 		this.getRootPane().setDefaultButton(btnOk);
-		btnOk.addActionListener(new OkActionEvent<>(this, this.controller, id, this.components));
+		btnOk.addActionListener(new OkActionEvent<>(this, this.controller, this.components, id));
 		
 		JButton btnCancel = new JButton("Cancel");
 		this.getContentPane().add(btnCancel);
 		btnCancel.addActionListener(new CloseActionEvent(this));
 	}
 	
-	protected void setValues(final R record)
+	/**
+	 * Populates the UI with values from a Record.
+	 * 
+	 * @param record the record to read values from.
+	 */
+	private final void setValues(final R record)
 	{
 		final RecordCacheTableModel tableModel = this.controller.getTableModel();
 		final int columnCount = tableModel.getColumnCount() - 1;
@@ -90,19 +116,22 @@ public class EditDialog<R extends TableRecord> extends JDialog
 				final JTextField txtField = new JTextField();
 				if (Objects.nonNull(record))
 				{
-					txtField.setText(Objects.toString(tableModel.getValueAt(record, i),""));
+					txtField.setText(Objects.toString(record.getValueAt(i),""));
 				}
 				txtField.setColumns(10);
 				comp = txtField;
 			}
 			this.components.add(comp);
 			this.getContentPane().add(comp);
-			
-			
 		}
 		this.setBounds(100, 100, 250, 35*(columnCount+1));
 	}
 	
+	/**
+	 * Close dialog action.
+	 * 
+	 * @author Matt Rayner
+	 */
 	private class CloseActionEvent implements ActionListener
 	{
 		private final Dialog dialog;
@@ -117,18 +146,24 @@ public class EditDialog<R extends TableRecord> extends JDialog
 		}
 	}
 	
+	/**
+	 * Creates/Edits the record by submitting to the controller.
+	 * 
+	 * @author Matt Rayner
+	 * @param <E> the type of record the controller is for.
+	 */
 	private class OkActionEvent<E> extends CloseActionEvent
 	{
 		private final UIController<E> controller;
 		private final List<JComponent> componentFields;
 		private final UUID id;
 		
-		public OkActionEvent(final Dialog dialog, final UIController<E> controller,  final UUID id, final List<JComponent> textFields)
+		public OkActionEvent(final Dialog dialog, final UIController<E> controller, final List<JComponent> textFields, final UUID id)
 		{
 			super(dialog);
 			this.controller = controller;
-			this.id = id;
 			this.componentFields = textFields;
+			this.id = id;
 		}
 		
 		@Override
