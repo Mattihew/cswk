@@ -30,6 +30,7 @@ public class MainController extends Observable
 	private MainFrame mainFrame;
 	/**
 	 * Launch the application.
+	 * @param args unused launch arguments
 	 */
 	public static void main(final String[] args)
 	{

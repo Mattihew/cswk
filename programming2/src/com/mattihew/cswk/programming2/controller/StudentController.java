@@ -84,7 +84,7 @@ public class StudentController extends TablePanelUIController<Student>
 		/**
 		 * Class Constructor.
 		 *
-		 * @param filePath
+		 * @param filePath the file path of the csv file.
 		 */
 		public StudentStorage(final String filePath)
 		{

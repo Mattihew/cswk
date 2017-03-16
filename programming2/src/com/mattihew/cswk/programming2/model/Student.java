@@ -18,8 +18,8 @@ public class Student extends Person implements Comparable<Student>
 	/**
 	 * Class Constructor.
 	 *
-	 * @param firstname the first name of this student.
-	 * @param lastname the last name of this student.
+	 * @param firstName the first name of this student.
+	 * @param lastName the last name of this student.
 	 * @param phone the phone number of this student.
 	 */
 	public Student(final String firstName, final String lastName, final String phone)

@@ -37,7 +37,7 @@ public class CreateRecordAction<R> implements UndoableAction
 	 *
 	 * @param recordCache the record cache to add the record to.
 	 * @param recordName the record name. used for this action's title.
-	 * @param newRecord the new value for the Record
+	 * @param record the new value for the Record
 	 * @param id the id to give to the record.
 	 */
 	public CreateRecordAction(final RecordCache<R> recordCache, final String recordName, final R record, final UUID id)

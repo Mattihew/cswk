@@ -16,7 +16,7 @@ import com.mattihew.cswk.programming2.view.TablePanel;
  * 
  * 
  * @author Matt Rayner
- * @param <E>
+ * @param <E> the type of the Record
  */
 public abstract class TablePanelUIController<E extends TableRecord> extends RecordController<E> implements UIController<E>
 {
@@ -59,7 +59,7 @@ public abstract class TablePanelUIController<E extends TableRecord> extends Reco
 	/**
 	 * Gets the table model that reprsents this controllers data.
 	 * 
-	 * @return
+	 * @return the RecordCacheTableModel
 	 */
 	public abstract RecordCacheTableModel getTableModel();
 

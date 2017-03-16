@@ -108,7 +108,7 @@ public abstract class Person implements TableRecord
 	 * Sub classes should make a call to this method before adding their own comparison logic.
 	 * For example: <br>
 	 * <code>
-	 * public int compareTo(&lt? extends Person&gt o) {<br>
+	 * public int compareTo(&lt;? extends Person&gt; o) {<br>
 	 * .   int result = super.compareTo(anotherStudent);<br>
 	 * .   if (result != 0) {<br>
 	 * .   .  return result;<br>

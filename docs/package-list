@@ -1,10 +1,10 @@
 com.mattihew.cswk.programming2.controller
-com.mattihew.cswk.programming2.controller.filters
 com.mattihew.cswk.programming2.controller.interfaces
 com.mattihew.cswk.programming2.controller.undo
 com.mattihew.cswk.programming2.model
 com.mattihew.cswk.programming2.model.abstracts
 com.mattihew.cswk.programming2.model.interfaces
+com.mattihew.cswk.programming2.model.tableModel
+com.mattihew.cswk.programming2.model.trip
 com.mattihew.cswk.programming2.util
 com.mattihew.cswk.programming2.view
-com.mattihew.cswk.programming2.view.util
