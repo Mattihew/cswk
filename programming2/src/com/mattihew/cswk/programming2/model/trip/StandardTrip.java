@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.model.booking.Booking;
-import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 
-public class StandardTrip implements Trip, TableRecord
+public class StandardTrip implements Trip
 {
+	private final String name;
+	
 	private final RecordCache<Booking> bookings;
 	
 	private final String destination;
@@ -20,9 +21,10 @@ public class StandardTrip implements Trip, TableRecord
 	
 	private final int cost;
 	
-	StandardTrip(final String destination, final TripProvider tripProvider, final RecordCache<Booking> bookingIds, final String accommodation)
+	StandardTrip(final String name, final String destination, final TripProvider tripProvider, final RecordCache<Booking> bookingIds, final String accommodation)
 	{
 		super();
+		this.name = name;
 		this.bookings = bookingIds;
 		this.destination = destination;
 		this.tripProvider = tripProvider;
@@ -31,9 +33,21 @@ public class StandardTrip implements Trip, TableRecord
 	}
 	
 	@Override
+	public String getName()
+	{
+		return this.name;
+	}
+	
+	@Override
 	public String getDestination()
 	{
 		return this.destination;
+	}
+	
+	@Override
+	public TripProvider getTripProvider()
+	{
+		return this.tripProvider;
 	}
 	
 	@Override
@@ -72,6 +86,8 @@ public class StandardTrip implements Trip, TableRecord
 
 	public static class TripBuilder
 	{
+		private String name = "";
+		
 		private RecordCache<Booking> bookings = new RecordCache<>();
 		
 		private String destination = "";
@@ -82,10 +98,17 @@ public class StandardTrip implements Trip, TableRecord
 		
 		public TripBuilder copyFrom(final StandardTrip trip)
 		{
+			this.name = trip.name;
 			this.bookings = trip.bookings;
 			this.destination = trip.destination;
 			this.tripProvider = trip.tripProvider;
 			this.accommodation = trip.accommodation;
+			return this;
+		}
+		
+		public TripBuilder setName(final String name)
+		{
+			this.name = name;
 			return this;
 		}
 		
@@ -126,7 +149,7 @@ public class StandardTrip implements Trip, TableRecord
 		
 		public StandardTrip build()
 		{
-			return new StandardTrip(this.destination, this.tripProvider, this.bookings, this.accommodation);
+			return new StandardTrip(this.name, this.destination, this.tripProvider, this.bookings, this.accommodation);
 		}
 	}
 }

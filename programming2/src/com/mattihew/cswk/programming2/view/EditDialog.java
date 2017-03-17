@@ -23,6 +23,8 @@ import com.mattihew.cswk.programming2.controller.TablePanelUIController;
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
+import com.mattihew.cswk.programming2.view.actions.CloseActionEvent;
+import com.mattihew.cswk.programming2.view.actions.OkActionEvent;
 
 public class EditDialog<R extends TableRecord> extends JDialog
 {
@@ -125,73 +127,5 @@ public class EditDialog<R extends TableRecord> extends JDialog
 			this.getContentPane().add(comp);
 		}
 		this.setBounds(100, 100, 250, 35*(columnCount+1));
-	}
-	
-	/**
-	 * Close dialog action.
-	 * 
-	 * @author Matt Rayner
-	 */
-	private class CloseActionEvent implements ActionListener
-	{
-		private final Dialog dialog;
-		public CloseActionEvent(final Dialog dialog)
-		{
-			this.dialog = dialog;
-		}
-		@Override
-		public void actionPerformed(final ActionEvent e)
-		{
-			this.dialog.dispatchEvent(new WindowEvent(this.dialog, WindowEvent.WINDOW_CLOSING));
-		}
-	}
-	
-	/**
-	 * Creates/Edits the record by submitting to the controller.
-	 * 
-	 * @author Matt Rayner
-	 * @param <E> the type of record the controller is for.
-	 */
-	private class OkActionEvent<E> extends CloseActionEvent
-	{
-		private final UIController<E> controller;
-		private final List<JComponent> componentFields;
-		private final UUID id;
-		
-		public OkActionEvent(final Dialog dialog, final UIController<E> controller, final List<JComponent> textFields, final UUID id)
-		{
-			super(dialog);
-			this.controller = controller;
-			this.componentFields = textFields;
-			this.id = id;
-		}
-		
-		@Override
-		public void actionPerformed(final ActionEvent e)
-		{
-			final Object[] values = new String[this.componentFields.size()];
-			int i = 0;
-			for (final JComponent componentField : this.componentFields)
-			{
-				if (componentField instanceof JTextField)
-				{
-					values[i++] = ((JTextField)componentField).getText();
-				}
-				else if (componentField instanceof JComboBox)
-				{
-					values[i++] = ((JComboBox<?>)componentField).getSelectedItem();
-				}
-			}
-			if (Objects.isNull(this.id))
-			{
-				this.controller.createRecord(values);
-			}
-			else
-			{
-				this.controller.editRecord(this.id, values);
-			}
-			super.actionPerformed(e);
-		}
-		
 	}
 }

@@ -13,6 +13,7 @@ import com.mattihew.cswk.programming2.model.booking.StandardBooking;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.model.trip.StandardTrip;
+import com.mattihew.cswk.programming2.model.trip.Trip;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 
 /**
@@ -35,7 +36,7 @@ public class BookingController extends TablePanelUIController<StandardBooking>
 	 * @param trip the trip to get the bookings for.
 	 * @param students the students to look values from.
 	 */
-	public BookingController(final UndoController undoController, final StandardTrip trip, final Collection<Student> students)
+	public BookingController(final UndoController undoController, final Trip trip, final Collection<Student> students)
 	{
 		super(undoController);
 		this.tripName = trip.getDestination();

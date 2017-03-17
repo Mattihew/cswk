@@ -1,5 +1,6 @@
 package com.mattihew.cswk.programming2.controller;
 
+import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
@@ -7,27 +8,33 @@ import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.UUID;
 
+import javax.swing.JDialog;
+
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.Teacher;
+import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.model.trip.StandardTrip;
+import com.mattihew.cswk.programming2.model.trip.Trip;
 import com.mattihew.cswk.programming2.util.ArrayUtils;
 import com.mattihew.cswk.programming2.view.TablePanel;
+import com.mattihew.cswk.programming2.view.TripDialog;
 
 /**
  * Controller
  * 
  * @author Matt Rayner
  */
-public class TripController extends TablePanelUIController<StandardTrip>
+public class TripController extends TablePanelUIController<Trip>
 {
 	private final UndoController undoController;
 	private final MainController mainController;
 	
-	private final RecordCache<StandardTrip> tripCache = new RecordCache<>();
+	private final RecordCache<Trip> tripCache = new RecordCache<>();
 	private final Collection<Student> students;
+	private final Collection<? extends TripProvider> tripProviders;
 	private final Collection<Teacher> teachers;
 	
 	/**
@@ -36,16 +43,18 @@ public class TripController extends TablePanelUIController<StandardTrip>
 	 * @param undoController the undo controller to use for the actions
 	 * @param mainController a reference to the mainController.
 	 * @param students a collection of students that can be added to trips
-	 * @param teachers a collection of teachers that can be added to trips
+	 * @param tripProviders a collection of teachers that can be added to trips
 	 */
-	public TripController(final UndoController undoController, final MainController mainController, final Collection<Student> students, final Collection<Teacher> teachers)
+	public TripController(final UndoController undoController, final MainController mainController,
+			final Collection<Student> students, final Collection<? extends TripProvider> tripProviders,
+			final Collection<Teacher> teachers)
 	{
 		super(undoController);
 		this.undoController = undoController;
 		this.mainController = mainController;
 		this.students = students;
+		this.tripProviders = tripProviders;
 		this.teachers = teachers;
-		this.tripCache.addRecord(new StandardTrip.TripBuilder().setTripProvider(new Teacher("Bob", "Smith")).setDestination("Somewhere").toTrip());
 	}
 	
 	@Override
@@ -87,13 +96,7 @@ public class TripController extends TablePanelUIController<StandardTrip>
 	}
 
 	@Override
-	public String getRecordNamePlural()
-	{
-		return "Trips";
-	}
-
-	@Override
-	public RecordCache<StandardTrip> getRecordCache()
+	public RecordCache<Trip> getRecordCache()
 	{
 		return this.tripCache;
 	}
@@ -109,9 +112,23 @@ public class TripController extends TablePanelUIController<StandardTrip>
 	{
 		if (attributeIndex == 1)
 		{
-			return ArrayUtils.toStringArray(this.teachers);
+			return ArrayUtils.toStringArray(this.tripProviders);
 		}
 		return null;
 	}
 
+	@Override
+	public void insertNewItem(final Frame owner)
+	{
+		final Dialog tripDialog = new TripDialog(owner, this, this.tripProviders, this.teachers, null);
+		tripDialog.setVisible(true);
+	}
+
+	@Override
+	public void editExistingItem(final Frame owner, final UUID id)
+	{
+		final Dialog tripDialog = new TripDialog(owner, this, this.tripProviders, this.teachers, id);
+		tripDialog.setVisible(true);
+		//TODO
+	}
 }

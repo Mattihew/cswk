@@ -4,7 +4,5 @@ public interface TripProvider
 {
 	String getTransport();
 	
-	String getVenueBooking();
-	
-	long getTripCost();
+	String getVenue();
 }

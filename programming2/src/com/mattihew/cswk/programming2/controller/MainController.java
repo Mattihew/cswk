@@ -14,6 +14,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.mattihew.cswk.programming2.controller.interfaces.UIController;
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
+import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
 import com.mattihew.cswk.programming2.view.MainFrame;
 
 /**
@@ -61,10 +62,15 @@ public class MainController extends Observable
 		}
 		final StudentController studentController = new StudentController(this.undoController);
 		final TeacherController teacherController = new TeacherController(this.undoController);
+		final ExternalProviderController extProvController = new ExternalProviderController(undoController);
 		this.uiControllers.add(studentController);
-		this.uiControllers.add(new TeacherController(this.undoController));
+		this.uiControllers.add(teacherController);
+		this.uiControllers.add(extProvController);
 		
-		this.uiControllers.add(new TripController(this.undoController, this, studentController.getRecordCache().getRecords().values(),teacherController.getRecordCache().getRecords().values()));
+		this.uiControllers.add(new TripController(this.undoController, this, 
+				studentController.getRecordCache().getRecords().values(),
+				extProvController.getRecordCache().getRecords().values(),
+				teacherController.getRecordCache().getRecords().values()));
 		this.mainFrame = new MainFrame(this, this.undoController, this.uiControllers);
 		this.mainFrame.setVisible(true);
 		this.mainFrame.addWindowListener(new WindowAdapter() {

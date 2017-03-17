@@ -6,8 +6,8 @@ import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 
 public class TripFactory
 {
-	public Trip getStandardTrip(final String destination, final TripProvider tripProvider, final RecordCache<Booking> bookingIds, final String accommodation)
+	public Trip getStandardTrip(final String name, final String destination, final TripProvider tripProvider, final RecordCache<Booking> bookingIds, final String accommodation)
 	{
-		return new StandardTrip(destination, tripProvider, bookingIds, accommodation);
+		return new StandardTrip(name, destination, tripProvider, bookingIds, accommodation);
 	}
 }

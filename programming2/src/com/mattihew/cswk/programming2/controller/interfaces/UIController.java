@@ -120,7 +120,10 @@ public interface UIController<E>
 	 * 
 	 * @return the name of a group of records.
 	 */
-	String getRecordNamePlural();
+	default String getRecordNamePlural()
+	{
+		return this.getRecordName() + "s";
+	}
 	
 	/**
 	 * Gets the Record cache for this controller.

@@ -55,12 +55,6 @@ public class StudentController extends TablePanelUIController<Student>
 	{
 		return "Student";
 	}
-
-	@Override
-	public String getRecordNamePlural()
-	{
-		return "Students";
-	}
 	
 	@Override
 	public void dispose()
