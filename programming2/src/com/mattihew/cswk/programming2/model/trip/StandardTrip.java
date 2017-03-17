@@ -1,15 +1,16 @@
 package com.mattihew.cswk.programming2.model.trip;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.UUID;
 
+import com.mattihew.cswk.programming2.model.booking.Booking;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
 import com.mattihew.cswk.programming2.model.interfaces.TripProvider;
+import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 
 public class StandardTrip implements Trip, TableRecord
 {
-	private final Collection<UUID> bookings;
+	private final RecordCache<Booking> bookings;
 	
 	private final String destination;
 	
@@ -19,7 +20,7 @@ public class StandardTrip implements Trip, TableRecord
 	
 	private final int cost;
 	
-	StandardTrip(final String destination, final TripProvider tripProvider, final Collection<UUID> bookingIds, final String accommodation)
+	StandardTrip(final String destination, final TripProvider tripProvider, final RecordCache<Booking> bookingIds, final String accommodation)
 	{
 		super();
 		this.bookings = bookingIds;
@@ -38,7 +39,7 @@ public class StandardTrip implements Trip, TableRecord
 	@Override
 	public Collection<UUID> getBookingIds()
 	{
-		return Collections.unmodifiableCollection(this.bookings);
+		return this.bookings.getIDs();
 	}
 	
 	@Override
@@ -71,7 +72,7 @@ public class StandardTrip implements Trip, TableRecord
 
 	public static class TripBuilder
 	{
-		private Collection<UUID> bookings = Collections.emptyList();
+		private RecordCache<Booking> bookings = new RecordCache<>();
 		
 		private String destination = "";
 		
@@ -88,9 +89,15 @@ public class StandardTrip implements Trip, TableRecord
 			return this;
 		}
 		
-		public TripBuilder setBookings(final Collection<UUID> bookings)
+		public TripBuilder addBookings(final Booking booking)
 		{
-			this.bookings = bookings;
+			this.bookings.addRecord(booking);
+			return this;
+		}
+		
+		public TripBuilder putBookings(final UUID id, final Booking booking)
+		{
+			this.bookings.putRecord(id, booking);
 			return this;
 		}
 

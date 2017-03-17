@@ -1,52 +1,49 @@
-package com.mattihew.cswk.programming2.model;
+package com.mattihew.cswk.programming2.model.booking;
 
 import java.util.Objects;
 
+import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.interfaces.TableRecord;
-import com.mattihew.cswk.programming2.model.trip.StandardTrip;
+import com.mattihew.cswk.programming2.model.trip.Trip;
 
-public class Booking implements Comparable<Booking>, TableRecord
+public class StandardBooking implements Comparable<StandardBooking>, Booking, TableRecord
 {
 	private final Student student;
 	
-	private final StandardTrip trip;
+	private final Trip trip;
 	
 	private final long amountPaid;
 	
-	private final Boolean permisionRecieved;
-	
-	public Booking(final Student student, final StandardTrip trip, final long pennysPaid)
-	{
-		this(student, trip, pennysPaid, null);
-	}
-	
-	public Booking(final Student student, final StandardTrip trip, final long pennysPaid, final Boolean hasPermission)
+	public StandardBooking(final Student student, final Trip trip, final long pennysPaid)
 	{
 		super();
 		this.student = student;
 		this.trip = trip;
 		this.amountPaid = pennysPaid;
-		this.permisionRecieved = hasPermission;
 	}
 	
+	@Override
 	public Student getStudent()
 	{
 		return this.student;
 	}
 	
-	public StandardTrip getTrip()
+	@Override
+	public Trip getTrip()
 	{
 		return this.trip;
 	}
 	
+	@Override
 	public long getAmountPaid()
 	{
 		return this.amountPaid;
 	}
 	
-	public Boolean permisionRecieved()
+	@Override
+	public boolean isApproved()
 	{
-		return this.permisionRecieved;
+		return true;
 	}
 
 	/**
@@ -55,7 +52,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public int compareTo(final Booking otherBooking)
+	public int compareTo(final StandardBooking otherBooking)
 	{
 		return this.student.compareTo(otherBooking.student);
 	}
@@ -68,7 +65,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(this.student, this.amountPaid, this.permisionRecieved);
+		return Objects.hash(this.student, Long.valueOf(this.amountPaid));
 	}
 
 	/**
@@ -84,13 +81,13 @@ public class Booking implements Comparable<Booking>, TableRecord
 		{
 			result = true;
 		}
-		else if (!(other instanceof Booking))
+		else if (!(other instanceof StandardBooking))
 		{
 			result = false;
 		}
 		else
 		{
-			final Booking otherBooking = (Booking) other;
+			final StandardBooking otherBooking = (StandardBooking) other;
 			result = this.student.equals(otherBooking.student);
 		}
 		return result;
@@ -105,8 +102,6 @@ public class Booking implements Comparable<Booking>, TableRecord
 				return this.student;
 			case 1:
 				return Long.valueOf(this.amountPaid);
-			case 2:
-				return this.permisionRecieved;
 			default:
 				return null;
 		}
@@ -115,7 +110,7 @@ public class Booking implements Comparable<Booking>, TableRecord
 	@Override
 	public int getColumnCount()
 	{
-		return 3;
+		return 2;
 	}
 
 

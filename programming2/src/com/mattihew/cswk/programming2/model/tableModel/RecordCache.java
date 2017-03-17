@@ -238,4 +238,9 @@ public class RecordCache<R> extends Observable
 	{
 		return Collections.unmodifiableMap(this.records).entrySet();
 	}
+	
+	public Set<UUID> getIDs()
+	{
+		return Collections.unmodifiableSet(this.records.keySet());
+	}
 }

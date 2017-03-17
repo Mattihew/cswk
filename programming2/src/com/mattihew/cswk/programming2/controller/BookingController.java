@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.UUID;
 
 import com.mattihew.cswk.programming2.controller.undo.UndoController;
-import com.mattihew.cswk.programming2.model.Booking;
 import com.mattihew.cswk.programming2.model.Student;
 import com.mattihew.cswk.programming2.model.abstracts.RecordStorage;
+import com.mattihew.cswk.programming2.model.booking.StandardBooking;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCache;
 import com.mattihew.cswk.programming2.model.tableModel.RecordCacheTableModel;
 import com.mattihew.cswk.programming2.model.trip.StandardTrip;
@@ -20,13 +20,13 @@ import com.mattihew.cswk.programming2.util.ArrayUtils;
  * 
  * @author Matt Rayner
  */
-public class BookingController extends TablePanelUIController<Booking>
+public class BookingController extends TablePanelUIController<StandardBooking>
 {
 	private static final List<String> TABLE_HEADINGS = Arrays.asList("Student","Trip", "has paid", "has Permission");
 	private final String tripName;
-	private final RecordCache<Booking> bookings;
+	private final RecordCache<StandardBooking> bookings;
 	private final Collection<Student> students;
-	private final RecordStorage<Booking> bookingStorage;
+	private final RecordStorage<StandardBooking> bookingStorage;
 	
 	/**
 	 * Class Constructor
@@ -72,7 +72,7 @@ public class BookingController extends TablePanelUIController<Booking>
 	}
 
 	@Override
-	public RecordCache<Booking> getRecordCache()
+	public RecordCache<StandardBooking> getRecordCache()
 	{
 		return this.bookings;
 	}
@@ -111,7 +111,7 @@ public class BookingController extends TablePanelUIController<Booking>
 
 
 
-	private class BookingStorage extends RecordStorage<Booking>
+	private class BookingStorage extends RecordStorage<StandardBooking>
 	{
 		public BookingStorage(final String filePath)
 		{
@@ -119,13 +119,13 @@ public class BookingController extends TablePanelUIController<Booking>
 		}
 
 		@Override
-		protected void writeRecord(final Appendable output, final Booking record) throws IOException
+		protected void writeRecord(final Appendable output, final StandardBooking record) throws IOException
 		{
 			
 		}
 
 		@Override
-		protected Booking readRecord(final String readLine)
+		protected StandardBooking readRecord(final String readLine)
 		{
 			// TODO Auto-generated method stub
 			return null;
